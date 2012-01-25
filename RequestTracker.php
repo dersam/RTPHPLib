@@ -24,6 +24,9 @@ SOFTWARE.
  * Requires installation of the pecl_http module.
  * http://php.net/manual/en/book.http.php
  *
+ * Standard request fields are documented at http://requesttracker.wikia.com/wiki/REST
+ * Depending on your request type, this will determine how you create your array of values.
+ * See the example script for a demonstration.
  * 
  */
 class RequestTracker extends HttpRequest{
