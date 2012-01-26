@@ -64,6 +64,7 @@ class RequestTracker extends HttpRequest{
      * @param string $user The username to authenticate with.
      * @param string $pass The password to authenticate with.
      * @param boolean $sessionEnabled Whether to enable session-based requests. Defaults to true (faster).
+     * @throws AuthenticationException if sessions are enabled and the session token cannot be obtained
      */
     function __construct($rootUrl, $user, $pass, $sessionEnabled=true){
         parent::__construct($rootUrl, HTTP_METH_POST);
