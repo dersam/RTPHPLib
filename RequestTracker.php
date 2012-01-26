@@ -118,7 +118,7 @@ class RequestTracker extends HttpRequest{
         }
         
         $response = parent::send();
-        $this->addPostFields(array());
+        $this->setPostFields(array());
         
         return $response;
     }
@@ -201,7 +201,6 @@ class RequestTracker extends HttpRequest{
     public function getTicketLinks($ticketId){
         $url = $this->url."ticket/$ticketId/links/show";
         $this->setUrl($url);
-        
         $response = $this->send();
         return $response;
     }
