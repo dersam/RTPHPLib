@@ -304,7 +304,7 @@ class RequestTracker extends HttpRequest{
      * @return HttpMessage
      */
     public function search($query, $orderBy, $format='s'){
-        $url = $this->url."/REST/1.0/search/ticket?query=$query&orderby=$orderBy&format=$format";
+        $url = $this->url."search/ticket?query=$query&orderby=$orderBy&format=$format";
             
         $this->setUrl($url);
         

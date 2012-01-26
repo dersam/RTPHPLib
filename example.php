@@ -1,8 +1,8 @@
 <?php
 require_once 'RequestTracker.php';
 
-$url = "http://rt.dersam.net";
-$user = "root";
+$url = "http://rt.example.com";
+$user = "user";
 $pass = "password";
 
 $rt = new RequestTracker($url, $user, $pass);
@@ -50,5 +50,40 @@ $response = $rt->doTicketComment(3, $content);
 print_r($response);
  */
 
+//Ticket Links
+/*
+$content = array(
+    'DependsOn'=>1
+);
 
+$response = $rt->editTicketLinks(3, $content);
+print_r($response);
+$response = $rt->getTicketLinks(3);
+print_r($response);
+*/
+
+//Attachment management
+/*
+$response = $rt->getTicketAttachments(3);
+print_r($response);
+$response = $rt->getAttachment(3, 13);
+print_r($response);
+$response = $rt->getAttachmentContent(3, 13);
+print_r($response);
+ */
+
+//Ticket History
+/*
+$response = $rt->getTicketHistory(3);
+print_r($response);
+$response = $rt->getTicketHistoryNode(3, 44);
+print_r($response);
+ */
+
+//Search demonstration
+//Unowned tickets ordered by Created date descending
+/*
+$response = $rt->search("Owner='Nobody'",'-Created');
+print_r($response);
+*/
 ?>
