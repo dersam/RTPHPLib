@@ -1,0 +1,3 @@
+See example.php for usage instructions.
+
+Requires the pecl_http module to be installed.
