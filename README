@@ -1,6 +1,6 @@
 See example.php for usage instructions.
 
-Requires the pecl_http module to be installed.
+Requires curl.
 
 See http://requesttracker.wikia.com/wiki/REST for information on available fields. 
 Note that if a request type has mandatory fields, they are requested in the function
