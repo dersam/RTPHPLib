@@ -169,6 +169,7 @@ class RequestTracker{
         $this->setRequestUrl($url);
         
         $response = $this->send();
+        $response = $this->parseResponse($response);
         return $response;
     }
 
@@ -296,13 +297,7 @@ class RequestTracker{
         $responseArray = array();
 
         if($format='s'){
-            $lines = explode(chr(10), $response['body']);
-            $string = $response['body'];
-
-            array_shift($lines);
-            array_shift($lines);
-
-            $responseArray = $this->parseResponse($lines);
+            $responseArray = $this->parseResponse($response);
         }
         else if($format='i'){
             return $response['body'];
@@ -316,7 +311,9 @@ class RequestTracker{
 
     private function parseResponse($response, $delimiter=':'){
         $responseArray = array();
-
+        $response = explode(chr(10), $response['body']);
+        array_shift($response);
+        array_shift($response);
         foreach($response as $line){
             $parts = explode($delimiter, $line);
             $key = array_shift($parts);
