@@ -136,7 +136,7 @@ class RequestTracker{
         $this->setRequestUrl($url);
         $this->setPostFields($content);
         $response = $this->send();
-        return $response;
+        return $this->parseResponse($response);
     }
 
     /**
@@ -150,7 +150,7 @@ class RequestTracker{
         $this->setRequestUrl($url);
         $this->setPostFields($content);
         $response = $this->send();
-        return $response;
+        return $this->parseResponse($response);
     }
 
     /**
@@ -163,7 +163,7 @@ class RequestTracker{
         
         $response = $this->send();
         $response = $this->parseResponse($response);
-        return $response;
+        return $this->parseResponse($response);
     }
 
     /**
@@ -174,7 +174,7 @@ class RequestTracker{
         $url = $this->url."ticket/$ticketId/links/show";
         $this->setRequestUrl($url);
         $response = $this->send();
-        return $response;
+        return $this->parseResponse($response);
     }
 
     /**
@@ -187,7 +187,7 @@ class RequestTracker{
         $this->setRequestUrl($url);
         $this->setPostFields($content);
         $response = $this->send();
-        return $response;
+        return $this->parseResponse($response);
     }
 
     /**
@@ -199,7 +199,7 @@ class RequestTracker{
         $this->setRequestUrl($url);
         
         $response = $this->send();
-        return $response;
+        return $this->parseResponse($response);
     }
 
     /**
@@ -212,7 +212,7 @@ class RequestTracker{
         $this->setRequestUrl($url);
         
         $response = $this->send();
-        return $response;
+        return $this->parseResponse($response);
     }
 
     /**
@@ -225,7 +225,7 @@ class RequestTracker{
         $this->setRequestUrl($url);
         
         $response = $this->send();
-        return $response;
+        return $this->parseResponse($response);
     }
 
     /**
@@ -242,7 +242,7 @@ class RequestTracker{
         $this->setRequestUrl($url);
         
         $response = $this->send();
-        return $response;
+        return $this->parseResponse($response);
     }
 
     /**
@@ -256,7 +256,7 @@ class RequestTracker{
         $this->setRequestUrl($url);
         
         $response = $this->send();
-        return $response;
+        return $this->parseResponse($response);
     }
     
     /**
