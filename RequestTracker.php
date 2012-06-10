@@ -124,7 +124,7 @@ class RequestTracker{
     public function editTicket($ticketId, $content){
         $url = $this->url."ticket/$ticketId/edit";
         $this->setRequestUrl($url);
-        $this->setPostFields(array('content'=>$this->parseArray($content)));
+        $this->setPostFields($content);
         $response = $this->send();
         return $response;
     }
@@ -139,7 +139,7 @@ class RequestTracker{
         $content['Action'] = 'correspond';
         $url = $this->url."ticket/$ticketId/comment";
         $this->setRequestUrl($url);
-        $this->setPostFields(array('content'=>$this->parseArray($content)));
+        $this->setPostFields($content);
         $response = $this->send();
         return $response;
     }
@@ -154,7 +154,7 @@ class RequestTracker{
         $content['Action'] = 'comment';
         $url = $this->url."ticket/$ticketId/comment";
         $this->setRequestUrl($url);
-        $this->setPostFields(array('content'=>$this->parseArray($content)));
+        $this->setPostFields($content);
         $response = $this->send();
         return $response;
     }
@@ -193,7 +193,7 @@ class RequestTracker{
     public function editTicketLinks($ticketId, $content){
         $url = $this->url."ticket/$ticketId/links";
         $this->setRequestUrl($url);
-        $this->setPostFields(array('content'=>$this->parseArray($content)));
+        $this->setPostFields($content);
         $response = $this->send();
         return $response;
     }
