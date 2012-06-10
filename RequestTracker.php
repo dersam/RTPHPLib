@@ -103,7 +103,6 @@ class RequestTracker{
     /**
      * Create a ticket
      * @param array $content
-     * @return HttpResponse
      */
     public function createTicket($content){
         $content['id'] = 'ticket/new';
@@ -111,28 +110,26 @@ class RequestTracker{
         $this->setRequestUrl($url);
         $this->setPostFields($content);
         $response = $this->send();
-        return $response;
+        return $this->parseResponse($response);
     }
 
     /**
      * Edit ticket
      * @param int $ticketId
      * @param array $content
-     * @return HttpMessage
      */
     public function editTicket($ticketId, $content){
         $url = $this->url."ticket/$ticketId/edit";
         $this->setRequestUrl($url);
         $this->setPostFields($content);
         $response = $this->send();
-        return $response;
+        return $this->parseResponse($response);
     }
     
     /**
      * Reply to a ticket
      * @param int $ticketId
      * @param array $content
-     * @return HttpMessage
      */
     public function doTicketReply($ticketId, $content){
         $content['Action'] = 'correspond';
@@ -148,7 +145,6 @@ class RequestTracker{
      * Comment on a ticket
      * @param int $ticketId
      * @param array $content
-     * @return HttpMessage
      */
     public function doTicketComment($ticketId, $content){
         $content['Action'] = 'comment';
@@ -162,7 +158,6 @@ class RequestTracker{
     /**
      * Get ticket metadata
      * @param int $ticketId
-     * @return HttpMessage
      */
     public function getTicketProperties($ticketId){
         $url = $this->url."ticket/$ticketId/show";
@@ -176,7 +171,6 @@ class RequestTracker{
     /**
      * Get ticket links
      * @param int $ticketId
-     * @return HttpMessage
      */
     public function getTicketLinks($ticketId){
         $url = $this->url."ticket/$ticketId/links/show";
@@ -189,7 +183,6 @@ class RequestTracker{
      * Modify links on a ticket
      * @param int $ticketId
      * @param array $content
-     * @return HttpMessage
      */
     public function editTicketLinks($ticketId, $content){
         $url = $this->url."ticket/$ticketId/links";
@@ -202,7 +195,6 @@ class RequestTracker{
     /**
      * Get a list of attachments on a ticket
      * @param int $ticketId
-     * @return HttpMessage
      */
     public function getTicketAttachments($ticketId){
         $url = $this->url."ticket/$ticketId/attachments";
@@ -216,7 +208,6 @@ class RequestTracker{
      * Get a specific attachment's metadata on a ticket
      * @param int $ticketId
      * @param int $attachmentId
-     * @return HttpMessage
      */
     public function getAttachment($ticketId, $attachmentId){
         $url = $this->url."ticket/$ticketId/attachments/$attachmentId";
@@ -230,7 +221,6 @@ class RequestTracker{
      * Get the content of an attachment
      * @param int $ticketId
      * @param int $attachmentId
-     * @return HttpMessage
      */
     public function getAttachmentContent($ticketId, $attachmentId){
         $url = $this->url."ticket/$ticketId/attachments/$attachmentId/content";
@@ -244,7 +234,6 @@ class RequestTracker{
      * Get the history of a ticket
      * @param int $ticketId
      * @param boolean $longFormat Whether to return all data of each history node
-     * @return HttpMessage
      */
     public function getTicketHistory($ticketId, $longFormat=true){
         if($longFormat)
@@ -262,7 +251,6 @@ class RequestTracker{
      * Get the long form data of a specific ticket history node
      * @param int $ticketId
      * @param int $historyId
-     * @return HttpMessage
      */
     public function getTicketHistoryNode($ticketId, $historyId){
         $url = $this->url."ticket/$ticketId/history/id/$historyId";
@@ -335,7 +323,6 @@ class RequestTracker{
     /**
      * Get metadata for a user
      * @param int|string $userId either the user id or the user login
-     * @return HttpMessage
      */
     public function getUserProperties($userId){
         $url = $this->url."user/$userId";
@@ -343,13 +330,12 @@ class RequestTracker{
         $this->setRequestUrl($url);
         
         $response = $this->send();
-        return $response;
+        return $this->parseResponse($response);
     }
 
     /**
      * Get metadata of a queue
      * @param int $queueId
-     * @return HttpMessage
      */
     public function getQueueProperties($queueId){
         $url = $this->url."queue/$queueId";
@@ -357,12 +343,11 @@ class RequestTracker{
         $this->setRequestUrl($url);
         
         $response = $this->send();
-        return $response;
+        return $this->parseResponse($response);
     }
 
     /**
      * Log out of RT and destroy current session
-     * @return HttpMessage
      */
     public function logout(){
         $url = $this->url."logout";
