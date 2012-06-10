@@ -90,11 +90,13 @@ class RequestTracker{
      *
      * @return HttpMessage the response from RT
      */
-    public function send() {
+    protected function send() {
+        if(!empty($this->postFields))
+            $fields = array('user'=>$this->user, 'pass'=>$this->pass, 'content'=>$this->parseArray($this->postFields));
+        else
+            $fields = array('user'=>$this->user, 'pass'=>$this->pass);
 
-        $this->setPostFields(array('user'=>$this->user, 'pass'=>$this->pass));
-        $response = $this->post($this->postFields);
-        $this->setPostFields(array());
+        $response = $this->post($fields);
         
         return $response;
     }
@@ -105,9 +107,10 @@ class RequestTracker{
      * @return HttpResponse
      */
     public function createTicket($content){
+        $content['id'] = 'ticket/new';
         $url = $this->url."ticket/new";
         $this->setRequestUrl($url);
-        $this->setPostFields(array('content'=>$this->parseArray($content)));
+        $this->setPostFields($content);
         $response = $this->send();
         return $response;
     }
@@ -274,10 +277,14 @@ class RequestTracker{
      *
      * Extend the Request Tracker class and implement custom search functions there
      * by passing $query and $orderBy to this function
-     * @param type $query
-     * @param type $orderBy
-     * @param type $format
-     * @return HttpMessage
+     * @param string $query the query to run
+     * @param string $orderBy how to order the query
+     * @param string $format the format type (i,s,l)
+     *
+     * @return array
+     *      's' = ticket-id=>ticket-subject
+     *      'i' = not implemented
+     *      'l' = not implemented
      */
     public function search($query, $orderBy, $format='s'){
         $url = $this->url."search/ticket?query=$query&orderby=$orderBy&format=$format";
@@ -286,23 +293,44 @@ class RequestTracker{
         
         $response = $this->send();
 
-        if($format='s'){
+        $responseArray = array();
 
+        if($format='s'){
+            $lines = explode(chr(10), $response['body']);
+            $string = $response['body'];
+
+            array_shift($lines);
+            array_shift($lines);
+
+            $responseArray = $this->parseResponse($lines);
         }
         else if($format='i'){
-
+            return $response['body'];
         }
         else if($format='l'){
-
+            return $response['body'];
         }
 
-        return $response;
+        return $responseArray;
+    }
+
+    private function parseResponse($response, $delimiter=':'){
+        $responseArray = array();
+
+        foreach($response as $line){
+            $parts = explode($delimiter, $line);
+            $key = array_shift($parts);
+            $value = implode($delimiter, $parts);
+            $responseArray[$key] = $value;
+        }
+
+        return $responseArray;
     }
     
     private function parseArray($contentArray){
         $content = "";
         foreach($contentArray as $key=>$value){
-            $content .= "$key: $value".PHP_EOL;
+            $content .= "$key: $value ".chr(10);
         }       
         return $content;
     }
@@ -364,7 +392,7 @@ class RequestTracker{
         if(!empty($contentType)){
             curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: $contentType"));
         }
-
+        array_unshift($data, "");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($ch);
