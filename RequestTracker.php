@@ -137,6 +137,7 @@ class RequestTracker{
      */
     public function doTicketReply($ticketId, $content){
         $content['Action'] = 'correspond';
+        $content['id'] = $ticketId;
         $url = $this->url."ticket/$ticketId/comment";
         $this->setRequestUrl($url);
         $this->setPostFields($content);
@@ -330,7 +331,7 @@ class RequestTracker{
     private function parseArray($contentArray){
         $content = "";
         foreach($contentArray as $key=>$value){
-            $content .= "$key: $value ".chr(10);
+            $content .= "$key: $value".chr(10);
         }       
         return $content;
     }
