@@ -86,8 +86,6 @@ class RequestTracker{
      * In general, this function should not be called directly- should only
      * be used if there is custom functionality not covered by the general
      * API functions provided.
-     *
-     * @return HttpMessage the response from RT
      */
     protected function send() {
         if(!empty($this->postFields))
