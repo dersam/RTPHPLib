@@ -361,8 +361,13 @@ class RequestTracker{
         curl_close($ch);
 
         if($response === false){
-            return false;
+            throw new RequestTrackerException("A fatal unexpected error occurred when communicating with RT.");
         }
+
+        if($code == 401){
+            throw new AuthenticationException("The user credentials were refused.");
+        }
+
         $response =  array('code'=>$code, 'body'=>$response);
         return $response;
     }
