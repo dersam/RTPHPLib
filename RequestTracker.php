@@ -29,12 +29,18 @@ SOFTWARE.
  * See the example script for a demonstration.
  * 
  */
-class RequestTracker extends HttpRequest{
+class RequestTracker{
     /**
      * The location of the REST api
      * @var string
      */
     private $url;
+
+    /**
+     * The location of the next request
+     * @var string
+     */
+    private $requestUrl;
 
     /**
      * Username to use
@@ -48,12 +54,8 @@ class RequestTracker extends HttpRequest{
      */
     private $pass;
 
-    /**
-     * If true, RT will authenticate once and obtain a session token.
-     * Otherwise, each request will re-auth with username and password.
-     * @var boolean
-     */
-    private $sessionEnabled;
+
+    private $postFields;
 
     /**
      * Create a new instance for API requests
@@ -63,15 +65,8 @@ class RequestTracker extends HttpRequest{
      *          would be "http://rt.example.com".  There should be no trailing slash.
      * @param string $user The username to authenticate with.
      * @param string $pass The password to authenticate with.
-     * @param boolean $sessionEnabled Whether to enable session-based requests. Defaults to true (faster).
-     * @throws AuthenticationException if sessions are enabled and the session token cannot be obtained
      */
-    function __construct($rootUrl, $user, $pass, $sessionEnabled=true){
-        parent::__construct($rootUrl, HTTP_METH_POST);
-        if($sessionEnabled)
-            $this->getSessionCookie($user, $pass);
-        
-        $this->sessionEnabled = $sessionEnabled;
+    function __construct($rootUrl, $user, $pass){
         $this->url = $rootUrl."/REST/1.0/";
         $this->user = $user;
         $this->pass = $pass;
@@ -86,23 +81,6 @@ class RequestTracker extends HttpRequest{
     }
 
     /**
-     * Obtains the session cookie. Called by constructor if sessions are enabled.
-     * @param string $user username to use
-     * @param string $pass password to use.
-     */
-    private function getSessionCookie($user, $pass){
-        $this->enableCookies();
-        $this->addPostFields(array('user'=>$user, 'pass'=>$pass));
-        $result = parent::send();
-        
-        if($result->getResponseCode() != 200){
-            throw new AuthenticationException("Couldn't authenticate to Request Tracker :: ".$result->getBody());
-        }
-        
-        $this->addPostFields(array());
-    }
-
-    /**
      * Overrides HttpRequest::send().
      * Sends a request to your RT.
      *
@@ -113,11 +91,9 @@ class RequestTracker extends HttpRequest{
      * @return HttpMessage the response from RT
      */
     public function send() {
-       if(!$this->sessionEnabled){
-            $this->addPostFields(array('user'=>$this->user, 'pass'=>$this->pass));
-        }
-        
-        $response = parent::send();
+
+        $this->setPostFields(array('user'=>$this->user, 'pass'=>$this->pass));
+        $response = $this->post($this->postFields);
         $this->setPostFields(array());
         
         return $response;
@@ -130,7 +106,7 @@ class RequestTracker extends HttpRequest{
      */
     public function createTicket($content){
         $url = $this->url."ticket/new";
-        $this->setUrl($url);
+        $this->setRequestUrl($url);
         $this->setPostFields(array('content'=>$this->parseArray($content)));
         $response = $this->send();
         return $response;
@@ -144,7 +120,7 @@ class RequestTracker extends HttpRequest{
      */
     public function editTicket($ticketId, $content){
         $url = $this->url."ticket/$ticketId/edit";
-        $this->setUrl($url);
+        $this->setRequestUrl($url);
         $this->setPostFields(array('content'=>$this->parseArray($content)));
         $response = $this->send();
         return $response;
@@ -159,7 +135,7 @@ class RequestTracker extends HttpRequest{
     public function doTicketReply($ticketId, $content){
         $content['Action'] = 'correspond';
         $url = $this->url."ticket/$ticketId/comment";
-        $this->setUrl($url);
+        $this->setRequestUrl($url);
         $this->setPostFields(array('content'=>$this->parseArray($content)));
         $response = $this->send();
         return $response;
@@ -174,7 +150,7 @@ class RequestTracker extends HttpRequest{
     public function doTicketComment($ticketId, $content){
         $content['Action'] = 'comment';
         $url = $this->url."ticket/$ticketId/comment";
-        $this->setUrl($url);
+        $this->setRequestUrl($url);
         $this->setPostFields(array('content'=>$this->parseArray($content)));
         $response = $this->send();
         return $response;
@@ -187,7 +163,7 @@ class RequestTracker extends HttpRequest{
      */
     public function getTicketProperties($ticketId){
         $url = $this->url."ticket/$ticketId/show";
-        $this->setUrl($url);
+        $this->setRequestUrl($url);
         
         $response = $this->send();
         return $response;
@@ -200,7 +176,7 @@ class RequestTracker extends HttpRequest{
      */
     public function getTicketLinks($ticketId){
         $url = $this->url."ticket/$ticketId/links/show";
-        $this->setUrl($url);
+        $this->setRequestUrl($url);
         $response = $this->send();
         return $response;
     }
@@ -213,7 +189,7 @@ class RequestTracker extends HttpRequest{
      */
     public function editTicketLinks($ticketId, $content){
         $url = $this->url."ticket/$ticketId/links";
-        $this->setUrl($url);
+        $this->setRequestUrl($url);
         $this->setPostFields(array('content'=>$this->parseArray($content)));
         $response = $this->send();
         return $response;
@@ -226,7 +202,7 @@ class RequestTracker extends HttpRequest{
      */
     public function getTicketAttachments($ticketId){
         $url = $this->url."ticket/$ticketId/attachments";
-        $this->setUrl($url);
+        $this->setRequestUrl($url);
         
         $response = $this->send();
         return $response;
@@ -240,7 +216,7 @@ class RequestTracker extends HttpRequest{
      */
     public function getAttachment($ticketId, $attachmentId){
         $url = $this->url."ticket/$ticketId/attachments/$attachmentId";
-        $this->setUrl($url);
+        $this->setRequestUrl($url);
         
         $response = $this->send();
         return $response;
@@ -254,7 +230,7 @@ class RequestTracker extends HttpRequest{
      */
     public function getAttachmentContent($ticketId, $attachmentId){
         $url = $this->url."ticket/$ticketId/attachments/$attachmentId/content";
-        $this->setUrl($url);
+        $this->setRequestUrl($url);
         
         $response = $this->send();
         return $response;
@@ -272,7 +248,7 @@ class RequestTracker extends HttpRequest{
         else
             $url = $this->url."ticket/$ticketId/history";
             
-        $this->setUrl($url);
+        $this->setRequestUrl($url);
         
         $response = $this->send();
         return $response;
@@ -287,7 +263,7 @@ class RequestTracker extends HttpRequest{
     public function getTicketHistoryNode($ticketId, $historyId){
         $url = $this->url."ticket/$ticketId/history/id/$historyId";
             
-        $this->setUrl($url);
+        $this->setRequestUrl($url);
         
         $response = $this->send();
         return $response;
@@ -306,7 +282,7 @@ class RequestTracker extends HttpRequest{
     public function search($query, $orderBy, $format='s'){
         $url = $this->url."search/ticket?query=$query&orderby=$orderBy&format=$format";
             
-        $this->setUrl($url);
+        $this->setRequestUrl($url);
         
         $response = $this->send();
         return $response;
@@ -328,7 +304,7 @@ class RequestTracker extends HttpRequest{
     public function getUserProperties($userId){
         $url = $this->url."user/$userId";
             
-        $this->setUrl($url);
+        $this->setRequestUrl($url);
         
         $response = $this->send();
         return $response;
@@ -342,7 +318,7 @@ class RequestTracker extends HttpRequest{
     public function getQueueProperties($queueId){
         $url = $this->url."queue/$queueId";
             
-        $this->setUrl($url);
+        $this->setRequestUrl($url);
         
         $response = $this->send();
         return $response;
@@ -355,9 +331,39 @@ class RequestTracker extends HttpRequest{
     public function logout(){
         $url = $this->url."logout";
             
-        $this->setUrl($url);
+        $this->setRequestUrl($url);
         
         $response = $this->send();
+        return $response;
+    }
+
+    private function setRequestUrl($url){
+        $this->requestUrl = $url;
+    }
+
+    private function setPostFields($data){
+        $this->postFields = $data;
+    }
+
+    private function post($data, $contentType=null){
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $this->requestUrl);
+        curl_setopt($ch, CURLOPT_POST, 1);
+
+        if(!empty($contentType)){
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: $contentType"));
+        }
+
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if($response === false){
+            return false;
+        }
+        $response =  array('code'=>$code, 'body'=>$response);
         return $response;
     }
 }
