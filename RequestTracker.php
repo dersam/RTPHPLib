@@ -21,8 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  *
- * Requires installation of the pecl_http module.
- * http://php.net/manual/en/book.http.php
+ * Requires curl
  *
  * Standard request fields are documented at http://requesttracker.wikia.com/wiki/REST
  * Depending on your request type, this will determine how you create your array of values.
