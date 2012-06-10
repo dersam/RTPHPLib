@@ -285,6 +285,17 @@ class RequestTracker{
         $this->setRequestUrl($url);
         
         $response = $this->send();
+
+        if($format='s'){
+
+        }
+        else if($format='i'){
+
+        }
+        else if($format='l'){
+
+        }
+
         return $response;
     }
     
@@ -368,6 +379,10 @@ class RequestTracker{
             throw new AuthenticationException("The user credentials were refused.");
         }
 
+        if($code != 200){
+            throw new HttpException("An error occurred : [$code] :: $response");
+        }
+
         $response =  array('code'=>$code, 'body'=>$response);
         return $response;
     }
@@ -375,4 +390,5 @@ class RequestTracker{
 
 class RequestTrackerException extends Exception {}
 class AuthenticationException extends RequestTrackerException {}
+class HttpException extends RequestTrackerException {}
 ?>
