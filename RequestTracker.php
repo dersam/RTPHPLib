@@ -33,28 +33,31 @@ class RequestTracker{
      * The location of the REST api
      * @var string
      */
-    private $url;
+    protected $url;
 
     /**
      * The location of the next request
      * @var string
      */
-    private $requestUrl;
+    protected $requestUrl;
 
     /**
-     * Username to use
+     * Username with which to authenticate
      * @var string
      */
-    private $user;
+    protected $user;
 
     /**
      * Password to use
      * @var string
      */
-    private $pass;
+    protected $pass;
 
-
-    private $postFields;
+    /**
+     * Current set of fields to post to RT
+     * @var array
+     */
+    protected $postFields;
 
     /**
      * Create a new instance for API requests
@@ -72,20 +75,11 @@ class RequestTracker{
     }
 
     /**
-     * Explicitly logs out of RT to destroy the session when disposing
-     * of the object instance.
-     */
-    function __destruct() {
-        $this->logout();
-    }
-
-    /**
-     * Overrides HttpRequest::send().
      * Sends a request to your RT.
      *
      * In general, this function should not be called directly- should only
-     * be used if there is custom functionality not covered by the general
-     * API functions provided.
+     * be used by a subclass if there is custom functionality not covered
+     * by the general API functions provided.
      */
     protected function send() {
         if(!empty($this->postFields))
@@ -100,7 +94,8 @@ class RequestTracker{
 
     /**
      * Create a ticket
-     * @param array $content
+     * @param array $content the ticket fields as fieldname=>fieldvalue array
+     * @return array key=>value response pair array
      */
     public function createTicket($content){
         $content['id'] = 'ticket/new';
@@ -114,7 +109,8 @@ class RequestTracker{
     /**
      * Edit ticket
      * @param int $ticketId
-     * @param array $content
+     * @param array $content the ticket fields as fieldname=>fieldvalue array
+     * @return array key=>value response pair array
      */
     public function editTicket($ticketId, $content){
         $url = $this->url."ticket/$ticketId/edit";
@@ -127,7 +123,8 @@ class RequestTracker{
     /**
      * Reply to a ticket
      * @param int $ticketId
-     * @param array $content
+     * @param array $content the ticket fields as fieldname=>fieldvalue array
+     * @return array key=>value response pair array
      */
     public function doTicketReply($ticketId, $content){
         $content['Action'] = 'correspond';
@@ -143,6 +140,7 @@ class RequestTracker{
      * Comment on a ticket
      * @param int $ticketId
      * @param array $content
+     * @return array key=>value response pair array
      */
     public function doTicketComment($ticketId, $content){
         $content['Action'] = 'comment';
@@ -169,6 +167,7 @@ class RequestTracker{
     /**
      * Get ticket links
      * @param int $ticketId
+     * @return array key=>value response pair array
      */
     public function getTicketLinks($ticketId){
         $url = $this->url."ticket/$ticketId/links/show";
@@ -181,6 +180,7 @@ class RequestTracker{
      * Modify links on a ticket
      * @param int $ticketId
      * @param array $content
+     * @return array key=>value response pair array
      */
     public function editTicketLinks($ticketId, $content){
         $url = $this->url."ticket/$ticketId/links";
@@ -193,6 +193,7 @@ class RequestTracker{
     /**
      * Get a list of attachments on a ticket
      * @param int $ticketId
+     * @return array key=>value response pair array
      */
     public function getTicketAttachments($ticketId){
         $url = $this->url."ticket/$ticketId/attachments";
@@ -206,6 +207,7 @@ class RequestTracker{
      * Get a specific attachment's metadata on a ticket
      * @param int $ticketId
      * @param int $attachmentId
+     * @return array key=>value response pair array
      */
     public function getAttachment($ticketId, $attachmentId){
         $url = $this->url."ticket/$ticketId/attachments/$attachmentId";
@@ -219,6 +221,7 @@ class RequestTracker{
      * Get the content of an attachment
      * @param int $ticketId
      * @param int $attachmentId
+     * @return array key=>value response pair array
      */
     public function getAttachmentContent($ticketId, $attachmentId){
         $url = $this->url."ticket/$ticketId/attachments/$attachmentId/content";
@@ -232,6 +235,7 @@ class RequestTracker{
      * Get the history of a ticket
      * @param int $ticketId
      * @param boolean $longFormat Whether to return all data of each history node
+     * @return array key=>value response pair array
      */
     public function getTicketHistory($ticketId, $longFormat=true){
         if($longFormat)
@@ -249,6 +253,7 @@ class RequestTracker{
      * Get the long form data of a specific ticket history node
      * @param int $ticketId
      * @param int $historyId
+     * @return array key=>value response pair array
      */
     public function getTicketHistoryNode($ticketId, $historyId){
         $url = $this->url."ticket/$ticketId/history/id/$historyId";
@@ -321,6 +326,7 @@ class RequestTracker{
     /**
      * Get metadata for a user
      * @param int|string $userId either the user id or the user login
+     * @return array key=>value response pair array
      */
     public function getUserProperties($userId){
         $url = $this->url."user/$userId";
@@ -334,6 +340,7 @@ class RequestTracker{
     /**
      * Get metadata of a queue
      * @param int $queueId
+     * @return array key=>value response pair array
      */
     public function getQueueProperties($queueId){
         $url = $this->url."queue/$queueId";
@@ -342,18 +349,6 @@ class RequestTracker{
         
         $response = $this->send();
         return $this->parseResponse($response);
-    }
-
-    /**
-     * Log out of RT and destroy current session
-     */
-    public function logout(){
-        $url = $this->url."logout";
-            
-        $this->setRequestUrl($url);
-        
-        $response = $this->send();
-        return $response;
     }
 
     private function setRequestUrl($url){
