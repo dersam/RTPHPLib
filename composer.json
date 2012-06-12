@@ -1,0 +1,23 @@
+{
+    "name": "dersam/rt-php-lib",
+    "type": "library",
+    "description": "Wrapper class for Request Tracker REST API",
+    "version": "1.0.0",
+    "type": "library",
+    "keywords": ["request tracker","rest","rt","rt3","rt4"],
+    "homepage":  "http://dersam.github.com/RTPHPLib/",
+    "license": "MIT",
+    "authors":[
+        {
+            "name": "Sam Schmidt",
+            "email": "samuel@dersam.net",
+            "homepage": "https://github.com/dersam"
+        }
+    ],
+    "support":{
+        "issues":"https://github.com/dersam/RTPHPLib/issues"
+    },
+    "require":{
+        "php": ">=5.3.0"
+    }
+}
