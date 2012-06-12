@@ -1,3 +1,5 @@
+Available as a composer package at http://packagist.org/packages/dersam/rt-php-lib.
+
 See example.php for usage instructions.
 
 Requires curl.
