@@ -160,7 +160,6 @@ class RequestTracker{
         $this->setRequestUrl($url);
         
         $response = $this->send();
-        $response = $this->parseResponse($response);
         return $this->parseResponse($response);
     }
 
@@ -279,7 +278,7 @@ class RequestTracker{
      *      'l' = not implemented
      */
     public function search($query, $orderBy, $format='s'){
-        $url = $this->url."search/ticket?query=$query&orderby=$orderBy&format=$format";
+        $url = $this->url."search/ticket?query=".urlencode($query)."&orderby=$orderBy&format=$format";
             
         $this->setRequestUrl($url);
         
@@ -309,7 +308,7 @@ class RequestTracker{
             $parts = explode($delimiter, $line);
             $key = array_shift($parts);
             $value = implode($delimiter, $parts);
-            $responseArray[$key] = $value;
+            $responseArray[$key] = trim($value);
         }
 
         return $responseArray;
