@@ -279,7 +279,7 @@ class RequestTracker{
      *      'l' = not implemented
      */
     public function search($query, $orderBy, $format='s'){
-        $url = $this->url."search/ticket?query=$query&orderby=$orderBy&format=$format";
+        $url = $this->url."search/ticket?query=".urlencode($query)."&orderby=$orderBy&format=$format";
             
         $this->setRequestUrl($url);
         
