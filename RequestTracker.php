@@ -160,7 +160,6 @@ class RequestTracker{
         $this->setRequestUrl($url);
         
         $response = $this->send();
-        $response = $this->parseResponse($response);
         return $this->parseResponse($response);
     }
 
