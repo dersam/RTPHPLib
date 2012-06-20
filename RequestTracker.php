@@ -308,7 +308,7 @@ class RequestTracker{
             $parts = explode($delimiter, $line);
             $key = array_shift($parts);
             $value = implode($delimiter, $parts);
-            $responseArray[$key] = $value;
+            $responseArray[$key] = trim($value);
         }
 
         return $responseArray;
