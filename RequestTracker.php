@@ -60,6 +60,15 @@ class RequestTracker{
     protected $postFields;
 
     /**
+     * If false, will disable verification of SSL certificates.
+     * This is not recommended for production use.  If SSL is not
+     * working and the RT host's cert is valid, you should verify that
+     * your curl installation has a CA cert bundle installed.
+     * @var bool
+     */
+    protected $enableSslVerification = true;
+
+    /**
      * Create a new instance for API requests
      * @param string $rootUrl
      *          The base URL to your request tracker installation. For example,
@@ -350,6 +359,14 @@ class RequestTracker{
         return $this->parseResponse($response);
     }
 
+    /**
+     * Toggles SSL certificate verification.
+     * @param $verify boolean false to turn off verification, true to enable
+     */
+    public function verifySslCertificates($verify){
+        $this->enableSslVerification = $verify;
+    }
+
     private function setRequestUrl($url){
         $this->requestUrl = $url;
     }
@@ -366,6 +383,12 @@ class RequestTracker{
         if(!empty($contentType)){
             curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: $contentType"));
         }
+
+        if(!$this->enableSslVerification){
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        }
+
         array_unshift($data, "");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
