@@ -295,13 +295,13 @@ class RequestTracker{
 
         $responseArray = array();
 
-        if($format='s'){
+        if($format=='s'){
             $responseArray = $this->parseResponse($response);
         }
-        else if($format='i'){
+        else if($format=='i'){
             return $response['body'];
         }
-        else if($format='l'){
+        else if($format=='l'){
             return $response['body'];
         }
 
