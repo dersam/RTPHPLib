@@ -43,13 +43,13 @@ print_r($response);
 
        */
 //Comment on a ticket
-           /*
+/*
 $content = array(
-    'Text'=>'This is a test comment.'
+    'Text'=>"This is a test comment.\nNew Line"
 );
-$response = $rt->doTicketComment(233, $content);
+$response = $rt->doTicketComment(168, $content);
 print_r($response);
-      */
+*/
 
 //Ticket Links
          /*
