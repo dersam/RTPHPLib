@@ -1,6 +1,6 @@
-Available as a composer package at http://packagist.org/packages/dersam/rt-php-lib.
+Provides an implementation of the Request Tracker API in PHP.
 
-Barring release of new Request Tracker features, or issue reports, this library is stable.
+Available as a composer package at http://packagist.org/packages/dersam/rt-php-lib.
 
 See example.php for usage instructions.
 
