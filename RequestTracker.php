@@ -154,7 +154,9 @@ class RequestTracker{
     public function doTicketComment($ticketId, $content){
         $content['Action'] = 'comment';
         $url = $this->url."ticket/$ticketId/comment";
-        $content['Text'] = str_replace("\n", "\n ", $content['Text']);
+
+        if(isset($content['Text']))
+            $content['Text'] = str_replace("\n", "\n ", $content['Text']);
 
         $this->setRequestUrl($url);
         $this->setPostFields($content);
