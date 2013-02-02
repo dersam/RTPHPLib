@@ -249,7 +249,7 @@ class RequestTracker{
      */
     public function getTicketHistory($ticketId, $longFormat=true){
         if($longFormat)
-            $url = $this->url."ticket/$ticketId/history?format=1";
+            $url = $this->url."ticket/$ticketId/history?format=l";
         else
             $url = $this->url."ticket/$ticketId/history";
             
