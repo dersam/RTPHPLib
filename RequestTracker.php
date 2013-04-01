@@ -97,6 +97,7 @@ class RequestTracker{
             $fields = array('user'=>$this->user, 'pass'=>$this->pass);
 
         $response = $this->post($fields);
+        $this->setPostFields('');
         
         return $response;
     }
