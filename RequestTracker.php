@@ -97,6 +97,7 @@ class RequestTracker{
             $fields = array('user'=>$this->user, 'pass'=>$this->pass);
 
         $response = $this->post($fields);
+        $this->setPostFields('');
         
         return $response;
     }
@@ -139,6 +140,8 @@ class RequestTracker{
         $content['Action'] = 'correspond';
         $content['id'] = $ticketId;
         $url = $this->url."ticket/$ticketId/comment";
+        if(isset($content['Text']))
+            $content['Text'] = str_replace("\n", "\n ", $content['Text']);
         $this->setRequestUrl($url);
         $this->setPostFields($content);
         $response = $this->send();
