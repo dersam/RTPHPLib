@@ -1,4 +1,10 @@
 <?php
+/**
+Alternatively use [composer](http://getcomposer.org/) and just:
+
+require 'vendor/autoload.php'
+
+ */
 require_once 'RequestTracker.php';
 
 $url = "http://rt.easter-eggs.org/demos/stable";
