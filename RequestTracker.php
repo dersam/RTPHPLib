@@ -110,6 +110,8 @@ class RequestTracker{
     public function createTicket($content){
         $content['id'] = 'ticket/new';
         $url = $this->url."ticket/new";
+        if(isset($content['Text']))
+            $content['Text'] = str_replace("\n", "\n ", $content['Text']);
         $this->setRequestUrl($url);
         $this->setPostFields($content);
         $response = $this->send();
