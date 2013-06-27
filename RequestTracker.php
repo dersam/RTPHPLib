@@ -403,10 +403,14 @@ class RequestTracker{
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($ch);
         $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $error = "";
+        if($response===false){
+            $error = curl_error($ch);
+        }
         curl_close($ch);
 
         if($response === false){
-            throw new RequestTrackerException("A fatal unexpected error occurred when communicating with RT.");
+            throw new RequestTrackerException("A fatal error occurred when communicating with RT :: ".$error);
         }
 
         if($code == 401){
