@@ -7,17 +7,17 @@ require 'vendor/autoload.php'
  */
 require_once 'RequestTracker.php';
 
-$url = "http://rt.easter-eggs.org/demos/stable";
+$url = "http://rt.easter-eggs.org/demos/4.2/";
 $user = "admin";
 $pass = "admin";
 
 $rt = new RequestTracker($url, $user, $pass);
 
 //Get the properties of an existing ticket, given the ID
-   /*
-$response = $rt->getTicketProperties(233);
-print_r($response);
-        */
+/*
+$response = $rt->getTicketProperties(158);
+print_r($response);*/
+
 //Create a new ticket- see http://requesttracker.wikia.com/wiki/REST#Ticket_Create for all fields
         /*
 $content = array(

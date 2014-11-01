@@ -1,6 +1,6 @@
 <?php
 /**
- * RTPHPLib v1.0.1
+ * RTPHPLib v1.0.2
  * Copyright (C) 2012 Samuel Schmidt
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -320,13 +320,20 @@ class RequestTracker{
     private function parseResponse($response, $delimiter=':'){
         $responseArray = array();
         $response = explode(chr(10), $response['body']);
-        array_shift($response);
-        array_shift($response);
+        array_shift($response); //skip RT status response
+        array_shift($response); //skip blank line
+        $lastkey = null;
         foreach($response as $line){
+            //RT will always preface a multiline with at least one space
+            if(substr($line, 0, 1)==' '){
+                $responseArray[$lastkey] .= "\n".trim($line);
+                continue;
+            }
             $parts = explode($delimiter, $line);
             $key = array_shift($parts);
             $value = implode($delimiter, $parts);
             $responseArray[$key] = trim($value);
+            $lastkey=$key;
         }
 
         return $responseArray;
