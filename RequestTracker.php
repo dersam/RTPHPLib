@@ -516,7 +516,7 @@ class RequestTracker{
     /**
      * @param array $lastError
      */
-    public function setLastError($lastError)
+    protected function setLastError($lastError)
     {
         $this->lastError = $lastError;
     }

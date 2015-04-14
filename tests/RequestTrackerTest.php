@@ -227,11 +227,7 @@ class RequestTrackerTest extends PHPUnit_Framework_TestCase{
     }
 
     public function testGetLastError(){
-
-    }
-
-    public function testSetLastError(){
-
+        $this->client->assertTrue($this->client->getLastError()==null);
     }
 
     public function testSetVerifySslCertificates(){
