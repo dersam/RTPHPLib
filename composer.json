@@ -2,7 +2,7 @@
     "name": "dersam/rt-php-lib",
     "type": "library",
     "description": "Wrapper class for Request Tracker REST API",
-    "version": "1.1.0",
+    "version": "2.0.0",
     "type": "library",
     "keywords": ["request tracker","rest","rt","rt3","rt4"],
     "homepage":  "http://dersam.github.com/RTPHPLib/",
