@@ -325,10 +325,11 @@ class RequestTracker{
         $this->setRequestUrl($url);
 
         $response = $this->parseResponse($this->send());
-
-        preg_match('/Objects of type ticket must be specified by numeric id/i', $response[0], $matches);
-        if (!empty($matches)) {
-            return false;
+        if(count($response)>0) {
+            preg_match('/Objects of type ticket must be specified by numeric id/i', $response[0], $matches);
+            if (!empty($matches)) {
+                return false;
+            }
         }
 
 
@@ -433,9 +434,11 @@ class RequestTracker{
         $this->setRequestUrl($url);
 
         $response = $this->parseResponse($this->send());
-        preg_match('/Invalid object/i', $response[0], $matches);
-        if (!empty($matches)) {
-            return false;
+        if(count($response)>0) {
+            preg_match('/Invalid object/i', $response[0], $matches);
+            if (!empty($matches)) {
+                return false;
+            }
         }
 
         return $response;
@@ -452,9 +455,11 @@ class RequestTracker{
         $this->setRequestUrl($url);
 
         $response = $this->parseResponse($this->send());
-        preg_match('/Invalid object/i', $response[0], $matches);
-        if (!empty($matches)) {
-            return false;
+        if(count($response)>0) {
+            preg_match('/Invalid object/i', $response[0], $matches);
+            if (!empty($matches)) {
+                return false;
+            }
         }
 
         return $response;
