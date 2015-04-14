@@ -159,4 +159,92 @@ class RequestTrackerTest extends PHPUnit_Framework_TestCase{
 
         $this->assertFalse($response);
     }
+
+    public function testGetTicketLinks(){
+
+    }
+
+    public function testFailedGetTicketLinks(){
+
+    }
+
+    public function testGetTicketAttachments(){
+
+    }
+
+    public function testFailedGetTicketAttachments(){
+
+    }
+
+    public function testGetAttachment(){
+
+    }
+
+    public function testFailedGetAttachment(){
+
+    }
+
+    public function testGetAttachmentContent(){
+
+    }
+
+    public function testFailedGetAttachmentContent(){
+
+    }
+
+    public function testGetTicketHistory(){
+
+    }
+
+    public function testFailedGetTicketHistory(){
+
+    }
+
+    public function testGetTicketHistoryNode(){
+
+    }
+
+    public function testFailedGetTicketHistoryNode(){
+
+    }
+
+    public function testSearchS(){
+
+    }
+
+    public function testSearchI(){
+
+    }
+
+    public function testSearchL(){
+
+    }
+
+    public function testGetUserProperties(){
+
+    }
+
+    public function testFailedGetUserProperties(){
+
+    }
+
+    public function testGetQueueProperties(){
+
+    }
+
+    public function testFailedGetQueueProperties(){
+
+    }
+
+    public function testGetLastError(){
+
+    }
+
+    public function testSetLastError(){
+
+    }
+
+    public function testVerifySslCertificates(){
+
+    }
 }
