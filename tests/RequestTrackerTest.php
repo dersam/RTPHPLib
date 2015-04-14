@@ -176,15 +176,25 @@ class RequestTrackerTest extends PHPUnit_Framework_TestCase{
 
     public function testFailedGetTicketLinks(){
         $response = $this->client->getTicketLinks(null);
-        $this->assertFalse(is_array($response));
+        $this->assertFalse($response);
     }
 
     public function testGetTicketHistory(){
+        $ticketId = $this->client->createTicket(array(
+            'Queue'=>'General',
+            'Subject'=>'TestGetTicketLinks',
+            'Text'=>'This is a test ticket.'
+        ));
 
+        $this->assertTrue(is_numeric($ticketId));
+
+        $history = $this->client->getTicketHistory($ticketId);
+        $this->assertTrue(is_array($history));
     }
 
     public function testFailedGetTicketHistory(){
-
+        $history = $this->client->getTicketHistory(null);
+        $this->assertFalse($history);
     }
 
     public function testGetTicketHistoryNode(){
