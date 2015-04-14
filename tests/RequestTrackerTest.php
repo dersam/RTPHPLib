@@ -16,7 +16,7 @@ class RequestTrackerTest extends PHPUnit_Framework_TestCase{
     }
 
     public function tearDown(){
-
+        $this->client = null;
     }
 
     public function testCreateTicket(){
@@ -31,7 +31,7 @@ class RequestTrackerTest extends PHPUnit_Framework_TestCase{
 
     public function testFailedCreateTicket(){
         $failure = $this->client->createTicket(array(
-            'Subject'=>'TestFailCreateTicket',
+            'Subject'=>'TestFailedCreateTicket',
             'Text'=>'This is a test ticket.'
         ));
 
@@ -45,6 +45,8 @@ class RequestTrackerTest extends PHPUnit_Framework_TestCase{
             'Subject'=>'TestEditTicket',
             'Text'=>'This is a test ticket.'
         ));
+
+        $this->assertTrue(is_numeric($ticketId));
 
         $response = $this->client->editTicket($ticketId, array(
             'Priority'=>3
@@ -60,8 +62,42 @@ class RequestTrackerTest extends PHPUnit_Framework_TestCase{
             'Text'=>'This is a test ticket.'
         ));
 
+        $this->assertTrue(is_numeric($ticketId));
+
         $response = $this->client->editTicket($ticketId, array(
             'Text'=>3
+        ));
+
+        $this->assertFalse($response);
+    }
+
+    public function testDoTicketReply(){
+        $ticketId = $this->client->createTicket(array(
+            'Queue'=>'General',
+            'Subject'=>'TestDoTicketReply',
+            'Text'=>'This is a test ticket.'
+        ));
+
+        $this->assertTrue(is_numeric($ticketId));
+
+        $response = $this->client->doTicketReply($ticketId,array(
+            'Text'=>'This is a ticket reply'
+        ));
+
+        $this->assertTrue($response);
+    }
+
+    public function testDoFailedTicketReply(){
+        $ticketId = $this->client->createTicket(array(
+            'Queue'=>'General',
+            'Subject'=>'TestDoFailedTicketReply',
+            'Text'=>'This is a test ticket.'
+        ));
+
+        $this->assertTrue(is_numeric($ticketId));
+
+        $response = $this->client->doTicketReply($ticketId,array(
+            'FakeField'=>'This is meaningless'
         ));
 
         $this->assertFalse($response);
