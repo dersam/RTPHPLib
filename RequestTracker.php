@@ -332,8 +332,14 @@ class RequestTracker{
             $parts = explode($delimiter, $line);
             $key = array_shift($parts);
             $value = implode($delimiter, $parts);
-            $responseArray[$key] = trim($value);
-            $lastkey=$key;
+
+            // push comments to end of array, ignore blank keys
+            if($key !== ''){
+                if(strpos($key, '#')===0)
+                    $responseArray[] = $key;
+                else
+                    $responseArray[$key] = trim($value);
+            }
         }
 
         return $responseArray;
