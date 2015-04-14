@@ -22,6 +22,7 @@ class RequestTrackerTest extends PHPUnit_Framework_TestCase{
     public function testCreateTicket(){
         $ticketId = $this->client->createTicket(array(
             'Queue'=>'General',
+            'Subject'=>'TestCreateTicket',
             'Text'=>'This is a test ticket.'
         ));
 
@@ -30,10 +31,39 @@ class RequestTrackerTest extends PHPUnit_Framework_TestCase{
 
     public function testFailedCreateTicket(){
         $failure = $this->client->createTicket(array(
+            'Subject'=>'TestFailCreateTicket',
             'Text'=>'This is a test ticket.'
         ));
 
         $this->assertFalse($failure);
         $this->assertTrue(is_array($this->client->getLastError()));
+    }
+
+    public function testEditTicket(){
+        $ticketId = $this->client->createTicket(array(
+            'Queue'=>'General',
+            'Subject'=>'TestEditTicket',
+            'Text'=>'This is a test ticket.'
+        ));
+
+        $response = $this->client->editTicket($ticketId, array(
+            'Priority'=>3
+        ));
+
+        $this->assertTrue($response);
+    }
+
+    public function testFailedEditTicket(){
+        $ticketId = $this->client->createTicket(array(
+            'Queue'=>'General',
+            'Subject'=>'TestFailedEditTicket',
+            'Text'=>'This is a test ticket.'
+        ));
+
+        $response = $this->client->editTicket($ticketId, array(
+            'Text'=>3
+        ));
+
+        $this->assertFalse($response);
     }
 }
