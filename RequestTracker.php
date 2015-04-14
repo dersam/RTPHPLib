@@ -418,21 +418,26 @@ class RequestTracker{
     /**
      * Get metadata for a user
      * @param int|string $userId either the user id or the user login
-     * @return array key=>value response pair array
+     * @return boolean|array key=>value response pair array, false on failure
      */
     public function getUserProperties($userId){
         $url = $this->url."user/$userId";
             
         $this->setRequestUrl($url);
-        
-        $response = $this->send();
-        return $this->parseResponse($response);
+
+        $response = $this->parseResponse($this->send());
+        preg_match('/Invalid object/i', $response[0], $matches);
+        if (!empty($matches)) {
+            return false;
+        }
+
+        return $response;
     }
 
     /**
      * Get metadata of a queue
      * @param int $queueId
-     * @return array key=>value response pair array
+     * @return boolean|array key=>value response pair array, false on failure
      */
     public function getQueueProperties($queueId){
         $url = $this->url."queue/$queueId";

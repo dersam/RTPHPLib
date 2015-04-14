@@ -208,11 +208,18 @@ class RequestTrackerTest extends PHPUnit_Framework_TestCase{
     }
 
     public function testGetUserProperties(){
-
+        $user = $this->client->getUserProperties(1);
+        $this->assertTrue(is_array($user));
+        $this->assertTrue(isset($user['id']));
+        $this->assertTrue(isset($user['Password']));
+        $this->assertTrue(isset($user['Name']));
+        $this->assertTrue(isset($user['RealName']));
+        $this->assertTrue(isset($user['Disabled']));
     }
 
     public function testFailedGetUserProperties(){
-
+        $user = $this->client->getUserProperties(null);
+        $this->assertFalse($user);
     }
 
     public function testGetQueueProperties(){
