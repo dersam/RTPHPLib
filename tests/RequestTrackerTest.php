@@ -175,11 +175,8 @@ class RequestTrackerTest extends PHPUnit_Framework_TestCase{
     }
 
     public function testFailedGetTicketLinks(){
-
         $response = $this->client->getTicketLinks(null);
-        print_r($response);
-        $this->assertTrue(is_array($response));
-        $this->assertTrue(isset($response['id']));
+        $this->assertFalse(is_array($response));
     }
 
     public function testGetTicketHistory(){
@@ -219,15 +216,27 @@ class RequestTrackerTest extends PHPUnit_Framework_TestCase{
     }
 
     public function testGetQueueProperties(){
+        $queue = $this->client->getQueueProperties(1);
 
+        $this->assertTrue(is_array($queue));
+        $this->assertTrue(isset($queue['id']));
+        $this->assertTrue(isset($queue['Name']));
+        $this->assertTrue(isset($queue['Description']));
+        $this->assertTrue(isset($queue['CorrespondAddress']));
+        $this->assertTrue(isset($queue['CommentAddress']));
+        $this->assertTrue(isset($queue['InitialPriority']));
+        $this->assertTrue(isset($queue['FinalPriority']));
+        $this->assertTrue(isset($queue['DefaultDueIn']));
+        $this->assertTrue(isset($queue['Disabled']));
     }
 
     public function testFailedGetQueueProperties(){
-
+        $queue = $this->client->getQueueProperties(null);
+        $this->assertFalse($queue);
     }
 
     public function testGetLastError(){
-        $this->client->assertTrue($this->client->getLastError()==null);
+        $this->assertTrue($this->client->getLastError()==null);
     }
 
     public function testSetVerifySslCertificates(){

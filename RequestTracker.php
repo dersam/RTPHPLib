@@ -438,9 +438,14 @@ class RequestTracker{
         $url = $this->url."queue/$queueId";
             
         $this->setRequestUrl($url);
-        
-        $response = $this->send();
-        return $this->parseResponse($response);
+
+        $response = $this->parseResponse($this->send());
+        preg_match('/Invalid object/i', $response[0], $matches);
+        if (!empty($matches)) {
+            return false;
+        }
+
+        return $response;
     }
 
     /**
