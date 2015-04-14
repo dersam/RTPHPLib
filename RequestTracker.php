@@ -118,6 +118,7 @@ class RequestTracker{
         $this->setPostFields($content);
         $response = $this->parseResponse($this->send());
         //A successful create should have only one line
+        //From https://github.com/dersam/RTPHPLib/pull/19
         if(count($response)==1){
             preg_match('/Ticket (\d+) created/i', $response[0], $matches);
             if (!empty($matches)) {
