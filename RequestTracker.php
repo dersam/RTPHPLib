@@ -319,7 +319,7 @@ class RequestTracker{
 
     private function parseResponse($response, $delimiter=':'){
         $responseArray = array();
-        $response = explode(chr(10), $response['body']);
+        $response = explode(chr(10), trim($response['body']));
         array_shift($response); //skip RT status response
         array_shift($response); //skip blank line
         $lastkey = null;
