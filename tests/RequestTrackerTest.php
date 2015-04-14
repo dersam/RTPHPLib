@@ -138,7 +138,7 @@ class RequestTrackerTest extends PHPUnit_Framework_TestCase{
     public function testGetTicketProperties(){
         $ticketId = $this->client->createTicket(array(
             'Queue'=>'General',
-            'Subject'=>'TestDoFailedTicketComment',
+            'Subject'=>'TestGetTicketProperties',
             'Text'=>'This is a test ticket.'
         ));
 
@@ -161,11 +161,25 @@ class RequestTrackerTest extends PHPUnit_Framework_TestCase{
     }
 
     public function testGetTicketLinks(){
+        $ticketId = $this->client->createTicket(array(
+            'Queue'=>'General',
+            'Subject'=>'TestGetTicketLinks',
+            'Text'=>'This is a test ticket.'
+        ));
 
+        $this->assertTrue(is_numeric($ticketId));
+
+        $response = $this->client->getTicketLinks($ticketId);
+        $this->assertTrue(is_array($response));
+        $this->assertTrue(isset($response['id']));
     }
 
     public function testFailedGetTicketLinks(){
 
+        $response = $this->client->getTicketLinks(null);
+        print_r($response);
+        $this->assertTrue(is_array($response));
+        $this->assertTrue(isset($response['id']));
     }
 
     public function testGetTicketHistory(){

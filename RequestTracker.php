@@ -244,8 +244,15 @@ class RequestTracker{
     public function getTicketLinks($ticketId){
         $url = $this->url."ticket/$ticketId/links/show";
         $this->setRequestUrl($url);
-        $response = $this->send();
-        return $this->parseResponse($response);
+        $response = $this->parseResponse($this->send());
+        if(count($response)==1){
+            preg_match('/does not exist/i', $response[0], $matches);
+            if (!empty($matches)) {
+                return false;
+            }
+        }
+
+        return $response;
     }
 
     /**
