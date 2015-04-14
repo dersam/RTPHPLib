@@ -197,8 +197,17 @@ class RequestTracker{
 
         $this->setRequestUrl($url);
         $this->setPostFields($content);
-        $response = $this->send();
-        return $this->parseResponse($response);
+        $response = $this->parseResponse($this->send());
+
+        if(count($response)==1){
+            preg_match('/Comments added/i', $response[0], $matches);
+            if (!empty($matches)) {
+                return true;
+            }
+        }
+
+        $this->setLastError($response);
+        return false;
     }
 
     /**

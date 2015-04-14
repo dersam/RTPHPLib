@@ -102,4 +102,36 @@ class RequestTrackerTest extends PHPUnit_Framework_TestCase{
 
         $this->assertFalse($response);
     }
+
+    public function testDoTicketComment(){
+        $ticketId = $this->client->createTicket(array(
+            'Queue'=>'General',
+            'Subject'=>'TestDoTicketComment',
+            'Text'=>'This is a test ticket.'
+        ));
+
+        $this->assertTrue(is_numeric($ticketId));
+
+        $response = $this->client->doTicketComment($ticketId,array(
+            'Text'=>'This is a ticket reply'
+        ));
+
+        $this->assertTrue($response);
+    }
+
+    public function testDoFailedTicketComment(){
+        $ticketId = $this->client->createTicket(array(
+            'Queue'=>'General',
+            'Subject'=>'TestDoFailedTicketComment',
+            'Text'=>'This is a test ticket.'
+        ));
+
+        $this->assertTrue(is_numeric($ticketId));
+
+        $response = $this->client->doTicketComment($ticketId,array(
+            'FakeField'=>'This is meaningless'
+        ));
+
+        $this->assertFalse($response);
+    }
 }
