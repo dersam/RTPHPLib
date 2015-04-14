@@ -168,30 +168,6 @@ class RequestTrackerTest extends PHPUnit_Framework_TestCase{
 
     }
 
-    public function testGetTicketAttachments(){
-
-    }
-
-    public function testFailedGetTicketAttachments(){
-
-    }
-
-    public function testGetAttachment(){
-
-    }
-
-    public function testFailedGetAttachment(){
-
-    }
-
-    public function testGetAttachmentContent(){
-
-    }
-
-    public function testFailedGetAttachmentContent(){
-
-    }
-
     public function testGetTicketHistory(){
 
     }
