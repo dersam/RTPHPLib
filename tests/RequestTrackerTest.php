@@ -153,4 +153,10 @@ class RequestTrackerTest extends PHPUnit_Framework_TestCase{
             $this->assertTrue($key!='');
         }
     }
+
+    public function testFailedGetTicketProperties(){
+        $response = $this->client->getTicketProperties(null);
+
+        $this->assertFalse($response);
+    }
 }

@@ -213,7 +213,7 @@ class RequestTracker{
     /**
      * Get ticket metadata
      * @param int $ticketId
-     * @return array
+     * @return boolean|array false if invalid ticket id, otherwise array of properties
      */
     public function getTicketProperties($ticketId){
         $url = $this->url."ticket/$ticketId/show";
@@ -221,6 +221,10 @@ class RequestTracker{
 
         $response = $this->parseResponse($this->send());
         $clean = array();
+
+        if(isset($response['No objects specified.'])){
+            return false;
+        }
 
         foreach($response as $key=>$value){
             if($key==''){
