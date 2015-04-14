@@ -213,13 +213,23 @@ class RequestTracker{
     /**
      * Get ticket metadata
      * @param int $ticketId
+     * @return array
      */
     public function getTicketProperties($ticketId){
         $url = $this->url."ticket/$ticketId/show";
         $this->setRequestUrl($url);
-        
-        $response = $this->send();
-        return $this->parseResponse($response);
+
+        $response = $this->parseResponse($this->send());
+        $clean = array();
+
+        foreach($response as $key=>$value){
+            if($key==''){
+                continue;
+            }
+
+            $clean[$key] = trim($value);
+        }
+        return $clean;
     }
 
     /**
