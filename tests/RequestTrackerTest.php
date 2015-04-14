@@ -234,7 +234,15 @@ class RequestTrackerTest extends PHPUnit_Framework_TestCase{
 
     }
 
-    public function testVerifySslCertificates(){
+    public function testSetVerifySslCertificates(){
+        $this->client->setVerifySslCertificates(false);
 
+        $this->assertFalse($this->client->getVerifySslCertificates());
+    }
+
+    public function testGetVerifySslCertificates(){
+        $this->client->setVerifySslCertificates(false);
+
+        $this->assertFalse($this->client->getVerifySslCertificates());
     }
 }

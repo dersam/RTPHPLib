@@ -447,8 +447,12 @@ class RequestTracker{
      * Toggles SSL certificate verification.
      * @param $verify boolean false to turn off verification, true to enable
      */
-    public function verifySslCertificates($verify){
+    public function setVerifySslCertificates($verify){
         $this->enableSslVerification = $verify;
+    }
+
+    public function getVerifySslCertificates(){
+        return $this->enableSslVerification;
     }
 
     private function setRequestUrl($url){
