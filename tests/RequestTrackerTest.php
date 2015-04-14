@@ -20,10 +20,20 @@ class RequestTrackerTest extends PHPUnit_Framework_TestCase{
     }
 
     public function testCreateTicket(){
-        $response = $this->client->createTicket(array(
+        $ticketId = $this->client->createTicket(array(
             'Queue'=>'General',
             'Text'=>'This is a test ticket.'
         ));
-        print_r($response);
+
+        $this->assertTrue(is_numeric($ticketId));
+    }
+
+    public function testFailedCreateTicket(){
+        $failure = $this->client->createTicket(array(
+            'Text'=>'This is a test ticket.'
+        ));
+
+        $this->assertFalse($failure);
+        $this->assertTrue(is_array($this->client->getLastError()));
     }
 }

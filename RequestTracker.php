@@ -68,6 +68,8 @@ class RequestTracker{
      */
     protected $enableSslVerification = true;
 
+    protected $lastError = null;
+
     /**
      * Create a new instance for API requests
      * @param string $rootUrl
@@ -105,7 +107,7 @@ class RequestTracker{
     /**
      * Create a ticket
      * @param array $content the ticket fields as fieldname=>fieldvalue array
-     * @return array key=>value response pair array
+     * @return bool|int false if creation failed, the ticket id on success
      */
     public function createTicket($content){
         $content['id'] = 'ticket/new';
@@ -114,8 +116,19 @@ class RequestTracker{
             $content['Text'] = str_replace("\n", "\n ", $content['Text']);
         $this->setRequestUrl($url);
         $this->setPostFields($content);
-        $response = $this->send();
-        return $this->parseResponse($response);
+        $response = $this->parseResponse($this->send());
+        //A successful create should have only one line
+        if(count($response)==1){
+            preg_match('/Ticket (\d+) created/i', $response[0], $matches);
+            if (!empty($matches)) {
+                if (isset($matches[1])) {
+                    return $matches[1];
+                }
+            }
+        }
+
+        $this->setLastError($response);
+        return false;
     }
 
     /**
@@ -436,6 +449,23 @@ class RequestTracker{
 
         $response =  array('code'=>$code, 'body'=>$response);
         return $response;
+    }
+
+    /**
+     * Contains the last unsuccessful response
+     * @return array
+     */
+    public function getLastError()
+    {
+        return $this->lastError;
+    }
+
+    /**
+     * @param array $lastError
+     */
+    public function setLastError($lastError)
+    {
+        $this->lastError = $lastError;
     }
 }
 
