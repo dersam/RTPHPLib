@@ -1,6 +1,7 @@
 #RTPHPLib v2.0.0
 
 [![Build Status](https://travis-ci.org/dersam/RTPHPLib.svg?branch=2.0.0)](https://travis-ci.org/dersam/RTPHPLib.svg?branch=2.0.0)
+
 Provides an implementation of the Request Tracker API in PHP.
 
 Available as a composer package at http://packagist.org/packages/dersam/rt-php-lib.
