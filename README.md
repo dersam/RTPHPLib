@@ -1,4 +1,4 @@
-#RTPHPLib v2.0.0
+#RTPHPLib v2
 
 [![Build Status](https://travis-ci.org/dersam/RTPHPLib.svg?branch=2.0.0)](https://travis-ci.org/dersam/RTPHPLib.svg?branch=2.0.0)
 
@@ -22,4 +22,4 @@ Note that if a request type has mandatory fields, they are requested in the func
 call, or (in certain cases) automatically added to the request.  So you don't need
 to specify the ticket id in content, or the type of action.
 
-Please report any issues at https://github.com/dersam/RTPHPLib/issues 
+Please report any issues at https://github.com/dersam/RTPHPLib/issues.
