@@ -18,6 +18,11 @@ Or, just download RequestTracker.php and require it in.
 ##Usage
 See example.php for usage instructions.
 
+If a function does not need to return any data, it will return true on success and false
+on failure; otherwise, it will return an array of the parsed response data. 
+*This is new behavior in v2, so if you are upgrading from v1, you will
+need to update your code!*
+
 If you ever need to see the content of a failed response, call $client->getLastError(). 
 This will contain the original parsed response array.
 
