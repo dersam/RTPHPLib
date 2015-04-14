@@ -4,6 +4,13 @@
 
 Provides an implementation of the Request Tracker API in PHP.
 
+##Requirements
+The curl php extension is required.
+
+##Versioning
+As of 2.0.0, RTPHPLib will follow semantic versioning.
+
+
 Available as a composer package at http://packagist.org/packages/dersam/rt-php-lib.
 
 See example.php for usage instructions.
