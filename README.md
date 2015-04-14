@@ -10,16 +10,21 @@ The curl php extension is required.
 ##Versioning
 As of 2.0.0, RTPHPLib will follow semantic versioning.
 
-
+##Installation
 Available as a composer package at http://packagist.org/packages/dersam/rt-php-lib.
 
+Or, just download RequestTracker.php and require it in.
+
+##Usage
 See example.php for usage instructions.
 
-Requires curl.
+If you ever need to see the content of a failed response, call $client->getLastError(). 
+This will contain the original parsed response array.
 
 See http://requesttracker.wikia.com/wiki/REST for information on available fields. 
 Note that if a request type has mandatory fields, they are requested in the function
 call, or (in certain cases) automatically added to the request.  So you don't need
 to specify the ticket id in content, or the type of action.
 
+##Issues
 Please report any issues at https://github.com/dersam/RTPHPLib/issues.
