@@ -22,6 +22,8 @@
         "ext-curl": "*"
     },
     "autoload": {
-        "classmap": ["RequestTracker.php"]
+        "psr-4": {
+          "Dersam\\RT\\":"src/Dersam/RT"
+        }
     }
 }
