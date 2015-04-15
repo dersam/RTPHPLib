@@ -47,7 +47,7 @@ class Client {
 
     /**
      * @param Request $request
-     * @return Response|boolean Returns a Response object
+     * @return Response|boolean Returns a parsed Response object
      *     or false if validation failed- request contains validation errors
      * @throws AuthenticationException
      * @throws HttpException
