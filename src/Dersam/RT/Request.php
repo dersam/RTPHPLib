@@ -6,6 +6,11 @@ abstract class Request {
     protected $validations = array();
     protected $requestFields  = array();
     protected $requestUri     = '';
+    protected $contentType    = null;
+
+    public function serializeFields(){
+        return $this->requestFields;
+    }
 
     public function getField($fieldName){
         return isset($fieldName) || $this->requestFields[$fieldName];
@@ -43,5 +48,21 @@ abstract class Request {
     public function getValidations()
     {
         return $this->validations;
+    }
+
+    /**
+     * @return null
+     */
+    public function getContentType()
+    {
+        return $this->contentType;
+    }
+
+    /**
+     * @param null $contentType
+     */
+    public function setContentType($contentType)
+    {
+        $this->contentType = $contentType;
     }
 }
