@@ -7,9 +7,9 @@
 
 namespace Dersam\RT\Exceptions;
 
-
 use Exception;
 
-class AuthenticationException extends Exception {
+class AuthenticationException extends Exception
+{
 
 }

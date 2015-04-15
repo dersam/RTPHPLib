@@ -1,8 +1,8 @@
 <?php
 namespace Dersam\RT;
 
-
-abstract class Response {
+abstract class Response
+{
     protected $rawResponse    = '';
     protected $parsedResponse = null;
     protected $success = false;

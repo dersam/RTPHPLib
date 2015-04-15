@@ -1,12 +1,8 @@
 <?php
 namespace Dersam\RT;
 
-
-use Dersam\RT\Exceptions\AuthenticationException;
-use Dersam\RT\Exceptions\HttpException;
-use Dersam\RT\Exceptions\RTException;
-
-abstract class Request {
+abstract class Request
+{
     protected $validations = array();
     protected $validationErrors = array();
     protected $requestFields  = array();
@@ -16,22 +12,28 @@ abstract class Request {
     /**
      * @return Response
      */
-    abstract function makeResponseInstance();
+    abstract public function makeResponseInstance();
 
-    public function serializeFields(){
+    abstract public function send(Client $client);
+
+    public function serializeFields()
+    {
         return $this->requestFields;
     }
 
-    public function getField($fieldName){
+    public function getField($fieldName)
+    {
         return isset($fieldName) || $this->requestFields[$fieldName];
     }
 
-    public function setField($fieldName, $content){
+    public function setField($fieldName, $content)
+    {
         $requestFields[$fieldName] = $content;
     }
 
-    public function setList($fields){
-        foreach($fields as $key=>$value){
+    public function setList($fields)
+    {
+        foreach ($fields as $key => $value) {
             $this->setField($key, $value);
         }
     }
@@ -90,61 +92,5 @@ abstract class Request {
     public function setValidationErrors($validationErrors)
     {
         $this->validationErrors = $validationErrors;
-    }
-
-    public function send(Client $client){
-        $validator = $client->getValidator();
-        if(!$validator->validate($this)){
-            $this->setValidationErrors($validator->getLastErrors());
-            return false;
-        }
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $client->getUrl().$this->getRequestUri());
-        curl_setopt($ch, CURLOPT_POST, 1);
-
-        if(!($this->getContentType() == '')){
-            curl_setopt($ch, CURLOPT_HTTPHEADER,
-                array("Content-type: ".$this->getContentType()));
-        }
-
-        if(!$client->isVerifyingSsl()){
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-        }
-
-        $data = array(
-            'user'=>$client->getUser(),
-            'pass'=>$client->getPass(),
-            'content'=>$this->serializeFields()
-        );
-
-        array_unshift($data, "");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($ch);
-        $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $error = "";
-
-        if($response===false){
-            $error = curl_error($ch);
-        }
-        curl_close($ch);
-
-        if($response === false){
-            throw new RTException("A fatal error occurred when communicating with RT :: ".$error);
-        }
-
-        if($code == 401){
-            throw new AuthenticationException("The user credentials were refused.");
-        }
-
-        if($code != 200){
-            throw new HttpException("An error occurred : [$code] :: $response");
-        }
-
-        $response = $this->makeResponseInstance();
-        $response->parse($code, $response);
-        return $response;
     }
 }

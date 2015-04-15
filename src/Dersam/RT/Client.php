@@ -1,12 +1,12 @@
 <?php
 namespace Dersam\RT;
 
-
 use Dersam\RT\Exceptions\AuthenticationException;
 use Dersam\RT\Exceptions\HttpException;
 use Dersam\RT\Exceptions\RTException;
 
-class Client {
+class Client
+{
     protected $verifySsl = true;
     protected $url;
     protected $user;
@@ -22,7 +22,8 @@ class Client {
      * @param string $user The username to authenticate with.
      * @param string $pass The password to authenticate with.
      */
-    function __construct($baseUrl, $user, $pass){
+    public function __construct($baseUrl, $user, $pass)
+    {
         $this->url = $baseUrl."/REST/1.0";
         $this->user = $user;
         $this->pass = $pass;
@@ -53,7 +54,8 @@ class Client {
      * @throws HttpException
      * @throws RTException
      */
-    public function send(Request $request){
+    public function send(Request $request)
+    {
         return $request->send($this);
     }
 

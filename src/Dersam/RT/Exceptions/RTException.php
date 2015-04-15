@@ -7,9 +7,9 @@
 
 namespace Dersam\RT\Exceptions;
 
-
 use Exception;
 
-class RTException extends Exception {
+class RTException extends Exception
+{
 
 }

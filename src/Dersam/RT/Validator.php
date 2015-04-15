@@ -7,15 +7,16 @@
 
 namespace Dersam\RT;
 
-
-class Validator {
+class Validator
+{
     protected $lastErrors = array();
 
     /**
      * @param Request $request
      * @return boolean
      */
-    public function validate(Request $request){
+    public function validate(Request $request)
+    {
 
     }
 
