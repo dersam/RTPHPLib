@@ -53,58 +53,39 @@ class Client {
      * @throws HttpException
      * @throws RTException
      */
-    public function send(Request &$request){
-        if(!$this->validator->validate($request)){
-            $request->setValidationErrors($this->validator->getLastErrors());
-            return false;
-        }
+    public function send(Request $request){
+        return $request->send($this);
+    }
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $this->url.$request->getRequestUri());
-        curl_setopt($ch, CURLOPT_POST, 1);
+    /**
+     * @return Validator
+     */
+    public function getValidator()
+    {
+        return $this->validator;
+    }
 
-        if(!($request->getContentType() == '')){
-            curl_setopt($ch, CURLOPT_HTTPHEADER,
-                array("Content-type: ".$request->getContentType()));
-        }
+    /**
+     * @return string
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
 
-        if(!$this->isVerifyingSsl()){
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-        }
+    /**
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
 
-        $data = array(
-            'user'=>$this->user,
-            'pass'=>$this->pass,
-            'content'=>$request->serializeFields()
-        );
-
-        array_unshift($data, "");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($ch);
-        $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $error = "";
-
-        if($response===false){
-            $error = curl_error($ch);
-        }
-        curl_close($ch);
-
-        if($response === false){
-            throw new RTException("A fatal error occurred when communicating with RT :: ".$error);
-        }
-
-        if($code == 401){
-            throw new AuthenticationException("The user credentials were refused.");
-        }
-
-        if($code != 200){
-            throw new HttpException("An error occurred : [$code] :: $response");
-        }
-
-        $response = $request->makeResponseInstance();
-        $response->parse($code, $response);
-        return $response;
+    /**
+     * @return string
+     */
+    public function getPass()
+    {
+        return $this->pass;
     }
 }
