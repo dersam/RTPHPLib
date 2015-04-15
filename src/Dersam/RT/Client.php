@@ -11,6 +11,7 @@ class Client {
     protected $url;
     protected $user;
     protected $pass;
+    protected $validator;
 
     /**
      * Create a new instance for API requests
@@ -25,6 +26,7 @@ class Client {
         $this->url = $baseUrl."/REST/1.0";
         $this->user = $user;
         $this->pass = $pass;
+        $this->validator = new Validator();
     }
 
     /**
@@ -43,7 +45,20 @@ class Client {
         $this->verifySsl = $verifySsl;
     }
 
-    protected function post(Request $request){
+    /**
+     * @param Request $request
+     * @return Response|boolean Returns a Response object
+     *     or false if validation failed- request contains validation errors
+     * @throws AuthenticationException
+     * @throws HttpException
+     * @throws RTException
+     */
+    public function send(Request &$request){
+        if(!$this->validator->validate($request)){
+            $request->setValidationErrors($this->validator->getLastErrors());
+            return false;
+        }
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->url.$request->getRequestUri());
         curl_setopt($ch, CURLOPT_POST, 1);
@@ -88,7 +103,8 @@ class Client {
             throw new HttpException("An error occurred : [$code] :: $response");
         }
 
-        $response =  array('code'=>$code, 'body'=>$response);
+        $response = $request->makeResponseInstance();
+        $response->parse($code, $response);
         return $response;
     }
 }

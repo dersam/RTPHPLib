@@ -6,7 +6,5 @@ abstract class Response {
     protected $rawResponse    = '';
     protected $parsedResponse = null;
 
-    public function parse($response){
-
-    }
+    abstract public function parse($code, $response);
 }

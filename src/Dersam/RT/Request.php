@@ -4,9 +4,15 @@ namespace Dersam\RT;
 
 abstract class Request {
     protected $validations = array();
+    protected $validationErrors = array();
     protected $requestFields  = array();
     protected $requestUri     = '';
     protected $contentType    = null;
+
+    /**
+     * @return Response
+     */
+    abstract function makeResponseInstance();
 
     public function serializeFields(){
         return $this->requestFields;
@@ -64,5 +70,21 @@ abstract class Request {
     public function setContentType($contentType)
     {
         $this->contentType = $contentType;
+    }
+
+    /**
+     * @return array
+     */
+    public function getValidationErrors()
+    {
+        return $this->validationErrors;
+    }
+
+    /**
+     * @param array $validationErrors
+     */
+    public function setValidationErrors($validationErrors)
+    {
+        $this->validationErrors = $validationErrors;
     }
 }

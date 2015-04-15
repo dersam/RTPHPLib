@@ -9,7 +9,21 @@ namespace Dersam\RT;
 
 
 class Validator {
-    public function validate($fields, $rules){
+    protected $lastErrors = array();
 
+    /**
+     * @param Request $request
+     * @return boolean
+     */
+    public function validate(Request $request){
+
+    }
+
+    /**
+     * @return array
+     */
+    public function getLastErrors()
+    {
+        return $this->lastErrors;
     }
 }
