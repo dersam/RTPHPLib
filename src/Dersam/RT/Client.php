@@ -5,7 +5,7 @@ use Dersam\RT\Exceptions\AuthenticationException;
 use Dersam\RT\Exceptions\HttpException;
 use Dersam\RT\Exceptions\RTException;
 
-class Client
+abstract class Client
 {
     protected $verifySsl = true;
     protected $url;
@@ -49,12 +49,13 @@ class Client
     /**
      * @param Request $request
      * @return Response|boolean Returns a parsed Response object
-     *     or false if validation failed- request contains validation errors
+     *          or false if validation failed-
+     *          original Request will contain the validation errors
      * @throws AuthenticationException
      * @throws HttpException
      * @throws RTException
      */
-    public function send(Request $request)
+    public function send(Request &$request)
     {
         return $request->send($this);
     }
