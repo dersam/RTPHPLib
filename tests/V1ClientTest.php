@@ -8,14 +8,15 @@
 namespace Dersam\RT;
 
 use Dersam\RT\Clients\V1Client;
+use Dersam\RT\Requests\v1\Base;
 
 class V1ClientTest extends \PHPUnit_Framework_TestCase
 {
-    protected $host = 'http://rt.easter-eggs.org/demos/4.2/';
-    protected $user = 'admin';
-    protected $password = 'admin';
+    protected static $host = 'http://rt.easter-eggs.org/demos/4.2/';
+    protected static $user = 'admin';
+    protected static $password = 'admin';
     /** @var  V1Client */
-    protected $client;
+    protected static $client;
 
     /**
      * This ensures we are testing the client in cases where multiple requests
@@ -23,18 +24,19 @@ class V1ClientTest extends \PHPUnit_Framework_TestCase
      * into requests and does not change state, it should not be polluted
      * across requests.
      */
-    public function setUpBeforeClass()
+    public static function setUpBeforeClass()
     {
-        $this->client = new V1Client(
-            $this->host,
-            $this->user,
-            $this->password
+        self::$client = new V1Client(
+            self::$host,
+            self::$user,
+            self::$password
         );
     }
 
     public function testGetBaseRequest()
     {
-
+        $response = self::$client->send(new Base());
+        print_r($response);
     }
 
     public function testDoCreateTicket()
