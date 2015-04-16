@@ -9,11 +9,7 @@
 
     <filter>
         <whitelist>
-            <directory>./</directory>
-            <exclude>
-                <directory>./tests</directory>
-                <directory>./examples</directory>
-            </exclude>
+            <directory>./src</directory>
         </whitelist>
     </filter>
 </phpunit>
