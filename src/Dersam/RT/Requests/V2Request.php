@@ -7,21 +7,11 @@
 
 namespace Dersam\RT\Requests;
 
-
 use Dersam\RT\Client;
 use Dersam\RT\Request;
-use Dersam\RT\Response;
 
-class V2Request extends Request{
-
-    /**
-     * @return Response
-     */
-    public function makeResponseInstance()
-    {
-        // TODO: Implement makeResponseInstance() method.
-    }
-
+abstract class V2Request extends Request
+{
     public function send(Client $client)
     {
         // TODO: Implement send() method.

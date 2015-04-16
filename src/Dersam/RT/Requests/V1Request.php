@@ -14,16 +14,8 @@ use Dersam\RT\Exceptions\RTException;
 use Dersam\RT\Request;
 use Dersam\RT\Response;
 
-class V1Request extends Request
+abstract class V1Request extends Request
 {
-    /**
-     * @return Response
-     */
-    public function makeResponseInstance()
-    {
-        // TODO: Implement makeResponseInstance() method.
-    }
-
     public function send(Client $client)
     {
         $validator = $client->getValidator();
