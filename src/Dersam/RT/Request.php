@@ -16,10 +16,7 @@ abstract class Request
 
     abstract public function send(Client $client);
 
-    public function serializeFields()
-    {
-        return $this->requestFields;
-    }
+    abstract public function serializeFields();
 
     public function getField($fieldName)
     {
@@ -28,7 +25,7 @@ abstract class Request
 
     public function setField($fieldName, $content)
     {
-        $requestFields[$fieldName] = $content;
+        $this->requestFields[$fieldName] = $content;
     }
 
     public function setList($fields)

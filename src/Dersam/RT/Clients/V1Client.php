@@ -7,6 +7,7 @@
 namespace Dersam\RT\Clients;
 
 use Dersam\RT\Client;
+use Dersam\RT\Requests\v1\CreateTicket;
 use Dersam\RT\Responses\v1\Base;
 
 class V1Client extends Client
@@ -19,7 +20,10 @@ class V1Client extends Client
 
     public function doCreateTicket()
     {
-
+        $request = new CreateTicket();
+        $response = $this->send($request);
+        print_r($response);
+        return $response;
     }
 
     public function doEditTicket()

@@ -16,6 +16,16 @@ use Dersam\RT\Response;
 
 abstract class V1Request extends Request
 {
+    public function serializeFields()
+    {
+        $content = "";
+        foreach ($this->requestFields as $key => $value) {
+            $content .= "$key: $value".chr(10);
+        }
+        return $content;
+    }
+
+
     public function send(Client $client)
     {
         $validator = $client->getValidator();
