@@ -7,7 +7,6 @@
 
 namespace Dersam\RT\Requests;
 
-
 use Dersam\RT\Client;
 use Dersam\RT\Exceptions\AuthenticationException;
 use Dersam\RT\Exceptions\HttpException;
@@ -15,8 +14,8 @@ use Dersam\RT\Exceptions\RTException;
 use Dersam\RT\Request;
 use Dersam\RT\Response;
 
-class V1Request extends Request{
-
+class V1Request extends Request
+{
     /**
      * @return Response
      */
@@ -25,9 +24,10 @@ class V1Request extends Request{
         // TODO: Implement makeResponseInstance() method.
     }
 
-    public function send(Client $client){
+    public function send(Client $client)
+    {
         $validator = $client->getValidator();
-        if(!$validator->validate($this)){
+        if (!$validator->validate($this)) {
             $this->setValidationErrors($validator->getLastErrors());
             return false;
         }
@@ -36,12 +36,15 @@ class V1Request extends Request{
         curl_setopt($ch, CURLOPT_URL, $client->getUrl().$this->getRequestUri());
         curl_setopt($ch, CURLOPT_POST, 1);
 
-        if(!($this->getContentType() == '')){
-            curl_setopt($ch, CURLOPT_HTTPHEADER,
-                array("Content-type: ".$this->getContentType()));
+        if (!($this->getContentType() == '')) {
+            curl_setopt(
+                $ch,
+                CURLOPT_HTTPHEADER,
+                array("Content-type: ".$this->getContentType())
+            );
         }
 
-        if(!$client->isVerifyingSsl()){
+        if (!$client->isVerifyingSsl()) {
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
         }
@@ -59,20 +62,21 @@ class V1Request extends Request{
         $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $error = "";
 
-        if($response===false){
+        if ($response===false) {
             $error = curl_error($ch);
         }
         curl_close($ch);
 
-        if($response === false){
+        //Non-200 codes indicate some kind of fatal error.
+        if ($response === false) {
             throw new RTException("A fatal error occurred when communicating with RT :: ".$error);
         }
 
-        if($code == 401){
+        if ($code == 401) {
             throw new AuthenticationException("The user credentials were refused.");
         }
 
-        if($code != 200){
+        if ($code != 200) {
             throw new HttpException("An error occurred : [$code] :: $response");
         }
 
