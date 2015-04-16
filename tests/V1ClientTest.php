@@ -12,7 +12,7 @@ use Dersam\RT\Requests\v1\Base;
 
 class V1ClientTest extends \PHPUnit_Framework_TestCase
 {
-    protected static $host = 'http://rt.easter-eggs.org/demos/4.2/';
+    protected static $host = 'http://rt.easter-eggs.org/demos/4.2';
     protected static $user = 'admin';
     protected static $password = 'admin';
     /** @var  V1Client */
@@ -31,12 +31,6 @@ class V1ClientTest extends \PHPUnit_Framework_TestCase
             self::$user,
             self::$password
         );
-    }
-
-    public function testGetBaseRequest()
-    {
-        $response = self::$client->send(new Base());
-        print_r($response);
     }
 
     public function testDoCreateTicket()

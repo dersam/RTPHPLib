@@ -17,7 +17,9 @@ class Validator
      */
     public function validate(Request $request)
     {
+        $valid = true;
 
+        return $valid;
     }
 
     /**

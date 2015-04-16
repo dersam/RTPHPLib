@@ -24,7 +24,7 @@ abstract class Client
      */
     public function __construct($baseUrl, $user, $pass)
     {
-        $this->url = $baseUrl."/REST/1.0";
+        $this->url = $baseUrl;
         $this->user = $user;
         $this->pass = $pass;
         $this->validator = new Validator();

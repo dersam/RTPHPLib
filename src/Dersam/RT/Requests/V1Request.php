@@ -25,7 +25,8 @@ abstract class V1Request extends Request
         }
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $client->getUrl().$this->getRequestUri());
+        $url = $client->getUrl().$this->getRequestUri();
+        curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, 1);
 
         if (!($this->getContentType() == '')) {
@@ -72,8 +73,8 @@ abstract class V1Request extends Request
             throw new HttpException("An error occurred : [$code] :: $response");
         }
 
-        $response = $this->makeResponseInstance();
-        $response->parse($code, $response);
-        return $response;
+        $rtresponse = $this->makeResponseInstance();
+        $rtresponse->parse($code, $response);
+        return $rtresponse;
     }
 }
