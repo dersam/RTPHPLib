@@ -39,6 +39,16 @@ class V1ClientTest extends \PHPUnit_Framework_TestCase
             'General',
             'Test DoCreateTicket'
         );
+
+        $this->assertTrue($response->isSuccess(), 'Request failed.');
+        $fields = $response->getResponseFields();
+        $this->assertTrue(is_array($fields));
+        $this->assertArrayHasKey('id', $fields);
+    }
+
+    public function testDoCreateTicketMultilineText()
+    {
+
     }
 
     public function testDoEditTicket()

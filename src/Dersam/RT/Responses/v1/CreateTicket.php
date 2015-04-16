@@ -10,5 +10,24 @@ use Dersam\RT\Responses\V1Response;
 
 class CreateTicket extends V1Response
 {
+    public function parse($code, $response)
+    {
+        parent::parse($code, $response);
+
+        if (isset($this->parsedResponse[0])) {
+            preg_match(
+                '/Ticket (\d+) created/i',
+                $this->parsedResponse[0],
+                $matches
+            );
+
+            if (!empty($matches)) {
+                if (isset($matches[1])) {
+                    $this->success = true;
+                    $this->parsedResponse = array('id'=>$matches[1]);
+                }
+            }
+        }
+    }
 
 }

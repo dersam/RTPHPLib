@@ -8,7 +8,6 @@ namespace Dersam\RT\Clients;
 
 use Dersam\RT\Client;
 use Dersam\RT\Requests\v1\CreateTicket;
-use Dersam\RT\Responses\v1\Base;
 
 class V1Client extends Client
 {
@@ -18,9 +17,22 @@ class V1Client extends Client
         $this->url .= "/REST/1.0";
     }
 
-    public function doCreateTicket($queue, $text)
-    {
+    /**
+     * @param string $queue The queue to receive the ticket.
+     * @param string $text Ticket content
+     * @param array $fields Additional system fields (Subject, Requestor, etc)
+     * @param array $custom Custom fields
+     * @return bool|\Dersam\RT\Response
+     */
+    public function doCreateTicket(
+        $queue,
+        $text,
+        $fields = array(),
+        $custom = array()
+    ) {
         $request = new CreateTicket();
+        $request->setCustomFields($custom);
+        $request->setList($fields);
         $request->setField('Queue', $queue);
         $request->setField('Text', $text);
 

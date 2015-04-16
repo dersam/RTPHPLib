@@ -25,6 +25,13 @@ abstract class V1Request extends Request
         return $content;
     }
 
+    public function setCustomFields($fields)
+    {
+        foreach ($fields as $name => $value) {
+            $this->setField('CF-'.$name, $value);
+        }
+    }
+
 
     public function send(Client $client)
     {
