@@ -7,8 +7,31 @@
 
 namespace Dersam\RT;
 
+use Dersam\RT\Clients\V1Client;
+
 class V1ClientTest extends \PHPUnit_Framework_TestCase
 {
+    protected $host = 'http://rt.easter-eggs.org/demos/4.2/';
+    protected $user = 'admin';
+    protected $password = 'admin';
+    /** @var  V1Client */
+    protected $client;
+
+    /**
+     * This ensures we are testing the client in cases where multiple requests
+     * are sent with one client. Since the client is just injecting itself
+     * into requests and does not change state, it should not be polluted
+     * across requests.
+     */
+    public function setUpBeforeClass()
+    {
+        $this->client = new V1Client(
+            $this->host,
+            $this->user,
+            $this->password
+        );
+    }
+
     public function testGetBaseRequest()
     {
 

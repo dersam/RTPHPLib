@@ -18,6 +18,8 @@ class V1Client extends Client
     public function getBaseRequest()
     {
         $request = new \Dersam\RT\Requests\v1\Base();
+        $response = $this->send($request);
+        return $response;
     }
 
     public function doCreateTicket()
