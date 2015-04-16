@@ -35,7 +35,10 @@ class V1ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testDoCreateTicket()
     {
-        $response = self::$client->doCreateTicket();
+        $response = self::$client->doCreateTicket(
+            'General',
+            'Test DoCreateTicket'
+        );
     }
 
     public function testDoEditTicket()

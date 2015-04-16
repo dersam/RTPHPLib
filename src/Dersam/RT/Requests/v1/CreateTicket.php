@@ -14,6 +14,8 @@ class CreateTicket extends V1Request
 {
     public function send(Client $client)
     {
+        $this->setRequestUri('/ticket/new');
+
         $this->setField('id', 'ticket/new');
 
         return parent::send($client);

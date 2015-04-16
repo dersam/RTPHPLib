@@ -12,8 +12,10 @@ class V1Response extends Response
 {
     public function parse($code, $response)
     {
+        $this->rawResponse = $response;
+        $this->code = $code;
         $responseArray = array();
-        $response = explode(chr(10), trim($response['body']));
+        $response = explode(chr(10), trim($response));
         array_shift($response); //skip RT status response
         array_shift($response); //skip blank line
         $lastkey = null;
@@ -38,6 +40,6 @@ class V1Response extends Response
             }
         }
 
-        return $responseArray;
+        $this->parsedResponse = $responseArray;
     }
 }

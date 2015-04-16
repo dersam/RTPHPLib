@@ -47,6 +47,8 @@ abstract class Client
     }
 
     /**
+     * Injects the credentials into the request.
+     *
      * @param Request $request
      * @return Response|boolean Returns a parsed Response object
      *          or false if validation failed-

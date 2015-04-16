@@ -18,11 +18,13 @@ class V1Client extends Client
         $this->url .= "/REST/1.0";
     }
 
-    public function doCreateTicket()
+    public function doCreateTicket($queue, $text)
     {
         $request = new CreateTicket();
+        $request->setField('Queue', $queue);
+        $request->setField('Text', $text);
+
         $response = $this->send($request);
-        print_r($response);
         return $response;
     }
 

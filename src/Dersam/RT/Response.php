@@ -3,7 +3,8 @@ namespace Dersam\RT;
 
 abstract class Response
 {
-    protected $rawResponse    = '';
+    protected $rawResponse    = null;
+    protected $code           = null;
     protected $parsedResponse = null;
     protected $success = false;
 
