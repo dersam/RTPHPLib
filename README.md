@@ -1,7 +1,7 @@
 #RTPHPLib v2
 
 [![Build Status](https://travis-ci.org/dersam/RTPHPLib.svg?branch=2.0.0)](https://travis-ci.org/dersam/RTPHPLib.svg?branch=2.0.0)
-
+[![Coverage Status](https://coveralls.io/repos/dersam/RTPHPLib/badge.svg)](https://coveralls.io/r/dersam/RTPHPLib)
 Provides an implementation of the Request Tracker API in PHP.
 
 ##Requirements
