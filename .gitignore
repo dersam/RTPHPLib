@@ -1,3 +1,4 @@
 /nbproject/private/
 .idea/
 phpunit.phar
+coverage/
