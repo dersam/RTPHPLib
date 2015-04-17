@@ -25,4 +25,10 @@ abstract class Response
     {
         return $this->parsedResponse;
     }
+
+    public function get($fieldName)
+    {
+        return isset($this->parsedResponse[$fieldName]) ?
+            $this->parsedResponse[$fieldName] : null;
+    }
 }

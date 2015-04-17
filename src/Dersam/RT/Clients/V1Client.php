@@ -8,6 +8,7 @@ namespace Dersam\RT\Clients;
 
 use Dersam\RT\Client;
 use Dersam\RT\Requests\v1\CreateTicket;
+use Dersam\RT\Requests\v1\GetTicketProperties;
 
 class V1Client extends Client
 {
@@ -22,7 +23,7 @@ class V1Client extends Client
      * @param string $text Ticket content
      * @param array $fields Additional system fields (Subject, Requestor, etc)
      * @param array $custom Custom fields
-     * @return bool|\Dersam\RT\Response
+     * @return bool|\Dersam\RT\Responses\v1\CreateTicket
      */
     public function doCreateTicket(
         $queue,
@@ -55,9 +56,14 @@ class V1Client extends Client
 
     }
 
-    public function getTicketProperties()
+    /**
+     * @param int $ticketId
+     * @return bool|\Dersam\RT\Responses\v1\GetTicketProperties
+     */
+    public function getTicketProperties($ticketId)
     {
-
+        $request = new GetTicketProperties($ticketId);
+        return $this->send($request);
     }
 
     public function getTicketLinks()

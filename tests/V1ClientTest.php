@@ -8,7 +8,6 @@
 namespace Dersam\RT;
 
 use Dersam\RT\Clients\V1Client;
-use Dersam\RT\Requests\v1\Base;
 
 class V1ClientTest extends \PHPUnit_Framework_TestCase
 {
@@ -68,7 +67,33 @@ class V1ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testGetTicketProperties()
     {
+        $responseCreateTicket = self::$client->doCreateTicket(
+            'General',
+            'Test DoCreateTicket'
+        );
 
+        $responseTicketProps = self::$client->getTicketProperties(
+            $responseCreateTicket->get('id')
+        );
+
+
+        $this->assertTrue($responseTicketProps!==false);
+
+        $this->assertTrue($responseTicketProps->isSuccess());
+        $fields = $responseTicketProps->getResponseFields();
+
+        $this->assertTrue(is_array($fields));
+
+        $expectedFields = array(
+            'Queue', 'Owner', 'Creator', 'Subject', 'Status', 'Priority',
+            'InitialPriority', 'FinalPriority', 'Requestors', 'Cc', 'AdminCc',
+            'Created', 'Starts', 'Started', 'Due', 'Resolved', 'Told',
+            'TimeEstimated', 'TimeWorked', 'TimeLeft'
+        );
+
+        foreach ($expectedFields as $field) {
+            $this->assertArrayHasKey($field, $fields);
+        }
     }
 
     public function testGetTicketLinks()
