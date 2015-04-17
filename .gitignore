@@ -2,3 +2,4 @@
 .idea/
 phpunit.phar
 coverage/
+vendor/
