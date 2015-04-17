@@ -8,7 +8,7 @@ namespace Dersam\RT\Responses\v1;
 
 use Dersam\RT\Responses\V1Response;
 
-class CreateTicket extends V1Response
+class DoCreateTicket extends V1Response
 {
     public function parse($code, $response)
     {

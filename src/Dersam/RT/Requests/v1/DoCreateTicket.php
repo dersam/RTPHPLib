@@ -10,7 +10,7 @@ use Dersam\RT\Client;
 use Dersam\RT\Requests\V1Request;
 use Dersam\RT\Response;
 
-class CreateTicket extends V1Request
+class DoCreateTicket extends V1Request
 {
     public function send(Client $client)
     {
@@ -26,6 +26,6 @@ class CreateTicket extends V1Request
      */
     public function makeResponseInstance()
     {
-        return new \Dersam\RT\Responses\v1\CreateTicket();
+        return new \Dersam\RT\Responses\v1\DoCreateTicket();
     }
 }
