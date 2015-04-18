@@ -10,10 +10,8 @@ use Dersam\RT\Responses\V1Response;
 
 class DoCreateTicket extends V1Response
 {
-    public function parse($code, $response)
+    public function onParseSuccess()
     {
-        parent::parse($code, $response);
-
         if (isset($this->parsedResponse[0])) {
             preg_match(
                 '/Ticket (\d+) created/i',

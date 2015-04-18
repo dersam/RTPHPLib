@@ -10,12 +10,8 @@ use Dersam\RT\Responses\V1Response;
 
 class GetTicketProperties extends V1Response
 {
-    public function parse($code, $response)
+    public function onParseSuccess()
     {
-        parent::parse($code, $response);
 
-        if ($code == 200) {
-            $this->success = true;
-        }
     }
 }

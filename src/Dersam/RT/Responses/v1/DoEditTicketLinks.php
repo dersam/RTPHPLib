@@ -11,4 +11,8 @@ use Dersam\RT\Responses\V1Response;
 class DoEditTicketLinks extends V1Response
 {
 
+    protected function onParseSuccess()
+    {
+        // TODO: Implement onParseSuccess() method.
+    }
 }

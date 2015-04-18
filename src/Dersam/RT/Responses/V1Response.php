@@ -8,7 +8,7 @@ namespace Dersam\RT\Responses;
 
 use Dersam\RT\Response;
 
-class V1Response extends Response
+abstract class V1Response extends Response
 {
     public function parse($code, $response)
     {
@@ -41,5 +41,12 @@ class V1Response extends Response
         }
 
         $this->parsedResponse = $responseArray;
+
+        if ($code == 200) {
+            $this->success = true;
+            $this->onParseSuccess();
+        }
     }
+
+    abstract protected function onParseSuccess();
 }
