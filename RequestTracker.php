@@ -240,12 +240,17 @@ class RequestTracker{
      * @param int $attachmentId
      * @return array key=>value response pair array
      */
-    public function getAttachmentContent($ticketId, $attachmentId){
+    public function getAttachmentContent($ticketId, $attachmentId, $raw = false){
         $url = $this->url."ticket/$ticketId/attachments/$attachmentId/content";
         $this->setRequestUrl($url);
         
         $response = $this->send();
-        return $this->parseResponse($response);
+
+        if ( ! $raw ) {
+            return $this->parseResponse($response);
+        } else {
+            return $response;
+        }
     }
 
     /**
