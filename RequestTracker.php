@@ -1,5 +1,4 @@
 <?php
-
 /**
  * RTPHPLib v1.0.2
  * Copyright (C) 2012 Samuel Schmidt
