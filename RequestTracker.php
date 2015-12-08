@@ -89,12 +89,25 @@ class RequestTracker{
      * In general, this function should not be called directly- should only
      * be used by a subclass if there is custom functionality not covered
      * by the general API functions provided.
+     *
+     * @param boolean $doNotUseContentField - the normal behavior of this
+     * function is to take the postFields and push them into a single
+     * content field for the POST.  If this is set to true, the postFields
+     * will be used as the fields for the form instead of getting pushed
+     * into the content field.
      */
-    protected function send() {
-        if(!empty($this->postFields))
+    protected function send($doNotUseContentField = false) {
+        if(!empty($this->postFields) && $doNotUseContentField == true) {
+            $fields = $this->postFields;
+            $fields['user'] = $this->user;
+            $fields['pass'] = $this->pass;
+        }
+        elseif(!empty($this->postFields)) {
             $fields = array('user'=>$this->user, 'pass'=>$this->pass, 'content'=>$this->parseArray($this->postFields));
-        else
+        }
+        else {
             $fields = array('user'=>$this->user, 'pass'=>$this->pass);
+        }
 
         $response = $this->post($fields);
         $this->setPostFields('');
@@ -190,6 +203,31 @@ class RequestTracker{
         $url = $this->url."ticket/$ticketId/links/show";
         $this->setRequestUrl($url);
         $response = $this->send();
+        return $this->parseResponse($response);
+    }
+
+    /**
+     * Add link from one ticket to another without worrying about existing links
+     * @param int $ticket1
+     * @param string $relationship - RefersTo, ReferredToBy, MemberOf, HasMember, DependsOn, DependedOnBy
+     * @param int $ticket2
+     * @return array key=>value response pair array
+     */
+    public function addTicketLink($ticket1, $relationship, $ticket2){
+
+        /* Note that this URL does not contain a ticket number. */
+        $url = $this->url."ticket/link";
+        $this->setRequestUrl($url);
+        $content = array(
+            'id'   => $ticket1,
+            'rel'  => $relationship,
+            'to'   => $ticket2
+        );
+        $this->setPostFields($content);
+
+        /* Use $doNotUseContentField = true for the send($doNotUseContentField)
+        function so that the fields won't get pushed into the content field. */
+        $response = $this->send(true);
         return $this->parseResponse($response);
     }
 
