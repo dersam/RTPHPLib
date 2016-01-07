@@ -405,6 +405,38 @@ class RequestTracker{
     }
 
     /**
+     * Create a user
+     * @param array $content the user fields as fieldname=>fieldvalue array
+     * @return array key=>value response pair array
+     */
+    public function createUser($content){
+        $content['id'] = 'user/new';
+        $url = $this->url."user/new";
+
+        $this->setRequestUrl($url);
+        $this->setPostFields($content);
+
+        $response = $this->send();
+        return $this->parseResponse($response);
+    }
+
+    /**
+     * Edit user
+     * @param int $userId
+     * @param array $content the user fields as fieldname=>fieldvalue array
+     * @return array key=>value response pair array
+     */
+    public function editUser($userId, $content){
+        $url = $this->url."user/$userId/edit";
+
+        $this->setRequestUrl($url);
+        $this->setPostFields($content);
+
+        $response = $this->send();
+        return $this->parseResponse($response);
+    }
+
+    /**
      * Get metadata of a queue
      * @param int $queueId
      * @return array key=>value response pair array
