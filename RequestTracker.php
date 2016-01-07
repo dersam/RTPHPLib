@@ -26,7 +26,7 @@ SOFTWARE.
  * Standard request fields are documented at http://requesttracker.wikia.com/wiki/REST
  * Depending on your request type, this will determine how you create your array of values.
  * See the example script for a demonstration.
- * 
+ *
  */
 class RequestTracker{
     /**
@@ -111,7 +111,7 @@ class RequestTracker{
 
         $response = $this->post($fields);
         $this->setPostFields('');
-        
+
         return $response;
     }
 
@@ -144,7 +144,7 @@ class RequestTracker{
         $response = $this->send();
         return $this->parseResponse($response);
     }
-    
+
     /**
      * Reply to a ticket
      * @param int $ticketId
@@ -189,7 +189,7 @@ class RequestTracker{
     public function getTicketProperties($ticketId){
         $url = $this->url."ticket/$ticketId/show";
         $this->setRequestUrl($url);
-        
+
         $response = $this->send();
         return $this->parseResponse($response);
     }
@@ -253,7 +253,7 @@ class RequestTracker{
     public function getTicketAttachments($ticketId){
         $url = $this->url."ticket/$ticketId/attachments";
         $this->setRequestUrl($url);
-        
+
         $response = $this->send();
         return $this->parseResponse($response);
     }
@@ -267,7 +267,7 @@ class RequestTracker{
     public function getAttachment($ticketId, $attachmentId){
         $url = $this->url."ticket/$ticketId/attachments/$attachmentId";
         $this->setRequestUrl($url);
-        
+
         $response = $this->send();
         return $this->parseResponse($response);
     }
@@ -281,7 +281,7 @@ class RequestTracker{
     public function getAttachmentContent($ticketId, $attachmentId, $raw = false){
         $url = $this->url."ticket/$ticketId/attachments/$attachmentId/content";
         $this->setRequestUrl($url);
-        
+
         $response = $this->send();
 
         if ( ! $raw ) {
@@ -302,9 +302,9 @@ class RequestTracker{
             $url = $this->url."ticket/$ticketId/history?format=l";
         else
             $url = $this->url."ticket/$ticketId/history";
-            
+
         $this->setRequestUrl($url);
-        
+
         $response = $this->send();
         return $this->parseResponse($response);
     }
@@ -317,13 +317,13 @@ class RequestTracker{
      */
     public function getTicketHistoryNode($ticketId, $historyId){
         $url = $this->url."ticket/$ticketId/history/id/$historyId";
-            
+
         $this->setRequestUrl($url);
-        
+
         $response = $this->send();
         return $this->parseResponse($response);
     }
-    
+
     /**
      * Search for tickets based on a query
      *
@@ -340,9 +340,9 @@ class RequestTracker{
      */
     public function search($query, $orderBy, $format='s'){
         $url = $this->url."search/ticket?query=".urlencode($query)."&orderby=$orderBy&format=$format";
-            
+
         $this->setRequestUrl($url);
-        
+
         $response = $this->send();
 
         $responseArray = array();
@@ -381,15 +381,15 @@ class RequestTracker{
 
         return $responseArray;
     }
-    
+
     private function parseArray($contentArray){
         $content = "";
         foreach($contentArray as $key=>$value){
             $content .= "$key: $value".chr(10);
-        }       
+        }
         return $content;
     }
-    
+
     /**
      * Get metadata for a user
      * @param int|string $userId either the user id or the user login
@@ -397,9 +397,9 @@ class RequestTracker{
      */
     public function getUserProperties($userId){
         $url = $this->url."user/$userId";
-            
+
         $this->setRequestUrl($url);
-        
+
         $response = $this->send();
         return $this->parseResponse($response);
     }
@@ -411,9 +411,9 @@ class RequestTracker{
      */
     public function getQueueProperties($queueId){
         $url = $this->url."queue/$queueId";
-            
+
         $this->setRequestUrl($url);
-        
+
         $response = $this->send();
         return $this->parseResponse($response);
     }
