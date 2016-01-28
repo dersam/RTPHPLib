@@ -329,6 +329,7 @@ class RequestTracker{
      *
      * Extend the Request Tracker class and implement custom search functions there
      * by passing $query and $orderBy to this function
+     * @param string $type search for: 'ticket', 'queue', 'group' or 'user'?
      * @param string $query the query to run
      * @param string $orderBy how to order the query
      * @param string $format the format type (i,s,l)
@@ -338,8 +339,8 @@ class RequestTracker{
      *      'i' = not implemented
      *      'l' = not implemented
      */
-    public function search($query, $orderBy, $format='s'){
-        $url = $this->url."search/ticket?query=".urlencode($query)."&orderby=$orderBy&format=$format";
+    public function search($type='ticket', $query='', $orderBy='', $format='s'){
+        $url = $this->url."search/$type?query=".urlencode($query)."&orderby=$orderBy&format=$format";
 
         $this->setRequestUrl($url);
 
