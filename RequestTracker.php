@@ -375,6 +375,7 @@ class RequestTracker{
         $response = explode(chr(10), $response['body']);
         array_shift($response); //skip RT status response
         array_shift($response); //skip blank line
+        array_pop($response); //remove empty blank line in the end
         $lastkey = null;
         foreach($response as $line){
             //RT will always preface a multiline with at least one space
