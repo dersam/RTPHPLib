@@ -306,7 +306,7 @@ class RequestTracker{
         $this->setRequestUrl($url);
 
         $response = $this->send();
-        return $this->parseResponse($response);
+        return $longFormat ? $this->parseLongTicketHistoryResponse($response) : $this->parseResponse($response);
     }
 
     /**
@@ -371,11 +371,32 @@ class RequestTracker{
     }
 
     private function parseResponse($response, $delimiter=':'){
-        $responseArray = array();
         $response = explode(chr(10), $response['body']);
         array_shift($response); //skip RT status response
         array_shift($response); //skip blank line
         array_pop($response); //remove empty blank line in the end
+
+        return $this->parseResponseBody($response);
+    }
+
+    private function parseLongTicketHistoryResponse($response, $delimiter=':') {
+        $historyNodes = array();
+        $historyNodeStrings = preg_split('/\# ([0-9]*)\/([0-9]*) \(id\/([0-9]*)\/total\)/', $response['body']);
+        // First item contains RT version and newline, remove it.
+        unset($historyNodeStrings[0]);
+        foreach ($historyNodeStrings as $historyNodeString) {
+          $node = explode(chr(10), $historyNodeString);
+          // First & second items are empty due to newlines.
+          array_shift($node);
+          array_shift($node);
+          $historyNodes[] = $this->parseResponseBody($node, $delimiter);
+        }
+
+        return $historyNodes;
+    }
+
+    private function parseResponseBody(array $response, $delimiter=':') {
+        $responseArray = array();
         $lastkey = null;
         foreach($response as $line){
             //RT will always preface a multiline with at least one space
