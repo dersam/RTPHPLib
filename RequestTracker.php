@@ -374,7 +374,6 @@ class RequestTracker{
         $response = explode(chr(10), $response['body']);
         array_shift($response); //skip RT status response
         array_shift($response); //skip blank line
-        array_pop($response); //remove empty blank line in the end
 
         return $this->parseResponseBody($response);
     }
