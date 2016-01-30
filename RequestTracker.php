@@ -392,11 +392,11 @@ class RequestTracker{
     }
 
     private function cleanResponseBody(array $response) {
-      array_shift($response); //skip RT status response
-      array_shift($response); //skip blank line
-      array_pop($response); //remove empty blank line in the end
+        array_shift($response); //skip RT status response
+        array_shift($response); //skip blank line
+        array_pop($response); //remove empty blank line in the end
 
-      return $response;
+        return $response;
     }
 
     private function parseResponseBody(array $response, $delimiter=':') {
