@@ -63,4 +63,37 @@ class RequestTrackerTest extends PHPUnit_Framework_TestCase
         $response = $rt->getTicketProperties($ticketId);
         $this->assertEquals(22, $response['Priority']);
     }
+
+    public function testTicketReply()
+    {
+        $rt = $this->getRequestTracker();
+        $content = array(
+            'Queue'=>'General',
+            'Requestor'=>'test@example.com',
+            'Subject'=>'Lorem Ipsum',
+            'Text'=>'dolor sit amet',
+            'Priority'=>1
+        );
+
+        $response = $rt->createTicket($content);
+        $ticketId = $this->getTicketIdFromCreateResponse($response);
+
+        $response = $rt->doTicketReply($ticketId, array(
+            'Text'=>'This is a test reply.'
+        ));
+
+        $this->assertEquals('# Correspondence added', key($response));
+
+        $history = $rt->getTicketHistory($ticketId);
+
+        $node = $history[2];
+        $this->assertEquals($ticketId, $node['Ticket']);
+        $this->assertEquals('This is a test reply.', $node['Content']);
+        $this->assertEquals('Correspond', $node['Type']);
+
+        $node = $rt->getTicketHistoryNode($ticketId, $node['id']);
+        $this->assertEquals($ticketId, $node['Ticket']);
+        $this->assertEquals('This is a test reply.', $node['Content']);
+        $this->assertEquals('Correspond', $node['Type']);
+    }
 }
