@@ -18,7 +18,8 @@
         "issues":"https://github.com/dersam/RTPHPLib/issues"
     },
     "require":{
-        "php": ">=5.3.0"
+        "php": ">=5.3.0",
+        "curl": "*"
     },
     "autoload": {
         "classmap": ["RequestTracker.php"]
