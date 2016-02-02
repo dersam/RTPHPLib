@@ -95,8 +95,17 @@ class RequestTracker{
      * content field for the POST.  If this is set to true, the postFields
      * will be used as the fields for the form instead of getting pushed
      * into the content field.
+     * 
+     * @param object[] $attachments Attachment's array to add to ticket
+     * 
+     * From original Request Tracker API, to add attachment to ticket while doing a comment
+     * we must add another attachment_1 param with raw file
+     * http://requesttracker.wikia.com/wiki/REST#Ticket_History_Comment
+     * After testings, one right way is to create CurlObject with file and to put into attachment_1
+     * because normal POST field fails
+     * More info: http://php.net/manual/en/class.curlfile.php
      */
-    protected function send($doNotUseContentField = false) {
+    protected function send($doNotUseContentField = false, $attachments = false) {
         if(!empty($this->postFields) && $doNotUseContentField == true) {
             $fields = $this->postFields;
             $fields['user'] = $this->user;
@@ -109,6 +118,12 @@ class RequestTracker{
             $fields = array('user'=>$this->user, 'pass'=>$this->pass);
         }
 
+        // If we've received attachment param, we have to add to POST params apart from 'content' and send Content-Type
+        if ( ! empty($attachments) ) {
+            foreach($attachments as $key => $attachment) {
+                $fields['attachment_'.$key] = $attachment;
+            }
+        }
         $response = $this->post($fields);
         $this->setPostFields('');
 
@@ -178,7 +193,28 @@ class RequestTracker{
 
         $this->setRequestUrl($url);
         $this->setPostFields($content);
-        $response = $this->send();
+
+        // If we have attachment_1 content, we have to pass it apart from inside 'content' array position
+        // and unset from postFields and from 'content' array because cannot convert CurlObject to String
+        // into parseArray() method inside send()
+        if ( ! empty($content['attachment_1'] ) ) {
+            
+            $attachContent = array();            
+            // search for all file fields            
+            $i = 1;
+            foreach($content as $key => $value){
+                if( strncmp($key, "attachment_", 11) == 0 ) {
+                    $attachContent[$i] = $value;
+                    unset($content['attachment_'.$i]);
+                    unset($this->postFields['attachment_'.$i]);
+                    $i++;
+                }
+            }
+            $response = $this->send(false, $attachContent);
+
+        } else {
+            $response = $this->send();
+        }
         return $this->parseResponse($response);
     }
 
@@ -276,6 +312,7 @@ class RequestTracker{
      * Get the content of an attachment
      * @param int $ticketId
      * @param int $attachmentId
+     * @param bool $raw
      * @return array key=>value response pair array
      */
     public function getAttachmentContent($ticketId, $attachmentId, $raw = false){
@@ -371,6 +408,7 @@ class RequestTracker{
     }
 
     private function parseResponse($response, $delimiter=':'){
+        $responseArray = array();
         $response = explode(chr(10), $response['body']);
         $response = $this->cleanResponseBody($response);
 
