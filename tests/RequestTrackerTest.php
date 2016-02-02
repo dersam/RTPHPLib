@@ -22,12 +22,24 @@ class RequestTrackerTest extends PHPUnit_Framework_TestCase
         $rt = $this->getRequestTracker();
         $content = array(
             'Queue'=>'General',
-            'Requestor'=>'root@localhost.com',
+            'Requestor'=>'test@example.com',
             'Subject'=>'Lorem Ipsum',
             'Text'=>'dolor sit amet'
         );
         $response = $rt->createTicket($content);
 
         $this->assertRegExp('/^# Ticket\b \d+\b created\.$/', key($response));
+    }
+
+    public function testEditTicket()
+    {
+        $rt = $this->getRequestTracker();
+        $content = array(
+            'Queue'=>'General',
+            'Requestor'=>'test@example.com',
+            'Subject'=>'Lorem Ipsum',
+            'Text'=>'dolor sit amet'
+        );
+
     }
 }
