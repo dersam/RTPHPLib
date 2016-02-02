@@ -10,5 +10,3 @@ php:
   - '5.6'
 
 before_install: docker run -dit --name rt -p 8080:80 netsandbox/request-tracker
-
-script: phpunit
