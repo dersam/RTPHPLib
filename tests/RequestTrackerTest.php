@@ -8,10 +8,23 @@
  */
 class RequestTrackerTest extends PHPUnit_Framework_TestCase
 {
+    private function getHost()
+    {
+        $host = getenv('RT_ENDPOINT');
+
+        if (!empty($host)) {
+            return "http://$host:8080";
+        }
+
+        return 'http://localhost:8080';
+    }
+
     public function getRequestTracker()
     {
+        $host = $this->getHost();
+
         return new RequestTracker(
-            'http://localhost:8080/',
+            "$host/",
             'root',
             'password'
         );
