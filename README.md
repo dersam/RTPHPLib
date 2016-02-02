@@ -6,7 +6,7 @@ Provides an implementation of the Request Tracker API in PHP.
 * curl
 
 ##Installation
-`composer require dersam/rtphplib`
+`composer require dersam/rt-php-lib`
 
 Or just download and include RequestTracker.php.
 
