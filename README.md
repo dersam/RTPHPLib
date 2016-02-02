@@ -25,3 +25,8 @@ Please report any issues at https://github.com/dersam/RTPHPLib/issues
 * Fork the repository.
 * Make your changes.
 * Submit pull requests against master.
+
+##Tests
+The unit tests are still a work in progress.
+
+Running `phpunit` from the project root will run the tests. The tests currently expect an RT instance running on `localhost:8080`.  You can easily get a local instance by using the `netsandbox/request-tracker` docker container.
