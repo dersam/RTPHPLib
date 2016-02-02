@@ -31,6 +31,18 @@ class RequestTrackerTest extends PHPUnit_Framework_TestCase
         $this->assertRegExp('/^# Ticket\b \d+\b created\.$/', key($response));
     }
 
+    private function getTicketIdFromCreateResponse($resp)
+    {
+        $matches = array();
+        preg_match(
+            '/^# Ticket\b (\d+)\b created\.$/',
+            key($resp),
+            $matches
+        );
+
+        return array_pop($matches);
+    }
+
     public function testEditTicket()
     {
         $rt = $this->getRequestTracker();
@@ -38,8 +50,17 @@ class RequestTrackerTest extends PHPUnit_Framework_TestCase
             'Queue'=>'General',
             'Requestor'=>'test@example.com',
             'Subject'=>'Lorem Ipsum',
-            'Text'=>'dolor sit amet'
+            'Text'=>'dolor sit amet',
+            'Priority'=>1
         );
 
+        $response = $rt->createTicket($content);
+        $ticketId = $this->getTicketIdFromCreateResponse($response);
+
+        $response = $rt->editTicket($ticketId, array('Priority'=>22));
+        $this->assertRegExp('/^# Ticket\b \d+\b updated\.$/', key($response));
+
+        $response = $rt->getTicketProperties($ticketId);
+        $this->assertEquals(22, $response['Priority']);
     }
 }
