@@ -10,10 +10,8 @@ class RequestTrackerTest extends PHPUnit_Framework_TestCase
 {
     public function getRequestTracker()
     {
-        $url = getenv('RT_DOCKER_URL') || 'http://localhost:8080/';
-
         return new RequestTracker(
-            $url,
+            'http://localhost:8080/',
             'root',
             'password'
         );
