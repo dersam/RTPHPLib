@@ -11,7 +11,7 @@ class RequestTrackerTest extends PHPUnit_Framework_TestCase
     public function getRequestTracker()
     {
         return new RequestTracker(
-            'http://192.168.99.100:8080/',
+            'http://localhost:8080/',
             'root',
             'password'
         );
