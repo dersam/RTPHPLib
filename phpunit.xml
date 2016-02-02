@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit colors="true" bootstrap="bootstrap.php">
+    <testsuites>
+        <testsuite name="RT Test Suite">
+            <directory suffix="Test.php">./tests/</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist>
+            <file>RequestTracker.php</file>
+        </whitelist>
+    </filter>
+</phpunit>

@@ -1,6 +1,6 @@
 <?php
 /**
- * RTPHPLib v1.0.2
+ * RTPHPLib v1.2.0
  * Copyright (C) 2012 Samuel Schmidt
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
