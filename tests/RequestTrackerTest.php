@@ -96,4 +96,32 @@ class RequestTrackerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('This is a test reply.', $node['Content']);
         $this->assertEquals('Correspond', $node['Type']);
     }
+
+    public function testTicketComment()
+    {
+        $rt = $this->getRequestTracker();
+        $content = array(
+            'Queue'=>'General',
+            'Requestor'=>'test@example.com',
+            'Subject'=>'Lorem Ipsum',
+            'Text'=>'dolor sit amet',
+            'Priority'=>1
+        );
+
+        $response = $rt->createTicket($content);
+        $ticketId = $this->getTicketIdFromCreateResponse($response);
+
+        $response = $rt->doTicketComment($ticketId, array(
+            'Text'=>'This is a test comment.\nNew Line'
+        ));
+
+        $this->assertEquals('# Comments added', key($response));
+
+        $history = $rt->getTicketHistory($ticketId);
+
+        $node = $history[2];
+        $this->assertEquals($ticketId, $node['Ticket']);
+        $this->assertEquals('This is a test comment.\nNew Line', $node['Content']);
+        $this->assertEquals('Comment', $node['Type']);
+    }
 }
