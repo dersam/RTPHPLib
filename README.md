@@ -23,7 +23,7 @@ Please report any issues at https://github.com/dersam/RTPHPLib/issues
 
 ##Contributing
 * Fork the repository.
-* Make your changes.
+* Make your changes (Adding tests makes you a good person!).
 * Submit pull requests against master.
 
 ##Tests
