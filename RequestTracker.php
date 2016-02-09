@@ -97,9 +97,9 @@ class RequestTracker
      * content field for the POST.  If this is set to true, the postFields
      * will be used as the fields for the form instead of getting pushed
      * into the content field.
-     * 
+     *
      * @param object[] $attachments Attachment's array to add to ticket
-     * 
+     *
      * From original Request Tracker API, to add attachment to ticket while doing a comment
      * we must add another attachment_1 param with raw file
      * http://requesttracker.wikia.com/wiki/REST#Ticket_History_Comment
@@ -120,8 +120,8 @@ class RequestTracker
         }
 
         // If we've received attachment param, we have to add to POST params apart from 'content' and send Content-Type
-        if ( ! empty($attachments) ) {
-            foreach($attachments as $key => $attachment) {
+        if (!empty($attachments)) {
+            foreach ($attachments as $key => $attachment) {
                 $fields['attachment_'.$key] = $attachment;
             }
         }
@@ -205,13 +205,13 @@ class RequestTracker
         // If we have attachment_1 content, we have to pass it apart from inside 'content' array position
         // and unset from postFields and from 'content' array because cannot convert CurlObject to String
         // into parseArray() method inside send()
-        if ( ! empty($content['attachment_1'] ) ) {
-            
-            $attachContent = array();            
-            // search for all file fields            
+        if (!empty($content['attachment_1'])) {
+
+            $attachContent = array();
+            // search for all file fields
             $i = 1;
-            foreach($content as $key => $value){
-                if( strncmp($key, "attachment_", 11) == 0 ) {
+            foreach ($content as $key => $value) {
+                if (strncmp($key, "attachment_", 11) == 0) {
                     $attachContent[$i] = $value;
                     unset($content['attachment_'.$i]);
                     unset($this->postFields['attachment_'.$i]);
@@ -349,7 +349,7 @@ class RequestTracker
      * @param boolean $longFormat Whether to return all data of each history node
      * @return array key=>value response pair array
      */
-    public function getTicketHistory($ticketId, $longFormat=true)
+    public function getTicketHistory($ticketId, $longFormat = true)
     {
         if ($longFormat) {
             $url = $this->url."ticket/$ticketId/history?format=l";
@@ -384,9 +384,9 @@ class RequestTracker
      *
      * @see self::search()
      */
-    public function searchTickets($query, $orderby, $format='s')
+    public function searchTickets($query, $orderby, $format = 's')
     {
-      return $this->search($query, $orderby, $format);
+        return $this->search($query, $orderby, $format);
     }
 
     /**
@@ -404,7 +404,7 @@ class RequestTracker
      *      'i' = not implemented
      *      'l' = not implemented
      */
-    public function search($query, $orderBy, $format='s', $type='ticket')
+    public function search($query, $orderBy, $format = 's', $type = 'ticket')
     {
         $url = $this->url."search/$type?query=".urlencode($query)."&orderby=$orderBy&format=$format";
 
@@ -425,7 +425,7 @@ class RequestTracker
         return $responseArray;
     }
 
-    private function parseResponse($response, $delimiter=':')
+    private function parseResponse($response, $delimiter = ':')
     {
         $response = explode(chr(10), $response['body']);
         $response = $this->cleanResponseBody($response);
@@ -433,16 +433,16 @@ class RequestTracker
         return $this->parseResponseBody($response);
     }
 
-    private function parseLongTicketHistoryResponse($response, $delimiter=':')
+    private function parseLongTicketHistoryResponse($response, $delimiter = ':')
     {
         $historyNodes = array();
         $historyNodeStrings = preg_split('/\# ([0-9]*)\/([0-9]*) \(id\/([0-9]*)\/total\)/', $response['body']);
         // First item contains RT version and newline, remove it.
         unset($historyNodeStrings[0]);
         foreach ($historyNodeStrings as $historyNodeString) {
-          $node = explode(chr(10), $historyNodeString);
-          $node = $this->cleanResponseBody($node);
-          $historyNodes[] = $this->parseResponseBody($node, $delimiter);
+            $node = explode(chr(10), $historyNodeString);
+            $node = $this->cleanResponseBody($node);
+            $historyNodes[] = $this->parseResponseBody($node, $delimiter);
         }
 
         return $historyNodes;
@@ -457,7 +457,7 @@ class RequestTracker
         return $response;
     }
 
-    private function parseResponseBody(array $response, $delimiter=':')
+    private function parseResponseBody(array $response, $delimiter = ':')
     {
         $responseArray = array();
         $lastkey = null;
@@ -480,7 +480,7 @@ class RequestTracker
     private function parseArray($contentArray)
     {
         $content = "";
-        foreach ($contentArray as $key=>$value) {
+        foreach ($contentArray as $key => $value) {
             $content .= "$key: $value".chr(10);
         }
         return $content;
@@ -540,9 +540,9 @@ class RequestTracker
      *
      * @see self::search()
      */
-    public function searchUsers($query='', $orderby='', $format='s')
+    public function searchUsers($query = '', $orderby = '', $format = 's')
     {
-      return $this->search($query, $orderby, $format, 'user');
+        return $this->search($query, $orderby, $format, 'user');
     }
 
     /**
@@ -565,9 +565,9 @@ class RequestTracker
      *
      * @see self::search()
      */
-    public function searchQueues($query='', $orderby='', $format='s')
+    public function searchQueues($query = '', $orderby = '', $format = 's')
     {
-      return $this->search($query, $orderby, $format, 'queue');
+        return $this->search($query, $orderby, $format, 'queue');
     }
 
     /**
@@ -575,9 +575,9 @@ class RequestTracker
      *
      * @see self::search()
      */
-    public function searchGroups($query='', $orderby='', $format='s')
+    public function searchGroups($query = '', $orderby = '', $format = 's')
     {
-      return $this->search($query, $orderby, $format, 'group');
+        return $this->search($query, $orderby, $format, 'group');
     }
 
     /**
@@ -599,7 +599,7 @@ class RequestTracker
         $this->postFields = $data;
     }
 
-    private function post($data, $contentType=null)
+    private function post($data, $contentType = null)
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->requestUrl);
@@ -648,7 +648,6 @@ class RequestTracker
     {
         return array('url', 'user', 'pass', 'enableSslVerification');
     }
-
 }
 
 class RequestTrackerException extends Exception
