@@ -603,6 +603,15 @@ class RequestTracker
         $response =  array('code'=>$code, 'body'=>$response);
         return $response;
     }
+
+    /**
+     * Dont save any stateful information when serializing.
+     */
+    public function __sleep()
+    {
+        return array('url', 'user', 'pass', 'enableSslVerification');
+    }
+
 }
 
 class RequestTrackerException extends Exception
