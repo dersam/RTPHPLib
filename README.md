@@ -23,5 +23,12 @@ Please report any issues at https://github.com/dersam/RTPHPLib/issues
 
 ##Contributing
 * Fork the repository.
-* Make your changes.
+* Make your changes (Adding tests makes you a good person!).
 * Submit pull requests against master.
+
+##Tests
+Running `phpunit` from the project root will run the tests. The tests currently 
+expect an RT instance running on `localhost:8080`.  You can easily get a local 
+instance by using the `netsandbox/request-tracker` docker container. If your
+instance is not at localhost, you can specify a different uri by setting the
+`RT_ENDPOINT` environment variable.
