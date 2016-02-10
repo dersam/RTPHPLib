@@ -1,0 +1,19 @@
+before_commands:
+    - composer install
+
+tools:
+    # Code Coverage
+    external_code_coverage:
+        enabled: true
+        timeout: 600
+    php_code_sniffer:
+        config:
+            standard: "PSR2"
+
+    # Runs Scrutinizer's PHP Analyzer Tool
+    php_analyzer:
+        enabled:              true
+        filter:
+            excluded_paths:
+                - 'tests/*'
+                - 'vendor/*'
