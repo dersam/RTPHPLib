@@ -1,5 +1,6 @@
 #RTPHPLib
 [![Build Status](https://travis-ci.org/dersam/RTPHPLib.svg?branch=master)](https://travis-ci.org/dersam/RTPHPLib)
+
 Provides an implementation of the Request Tracker API in PHP.
 
 ##Requirements
