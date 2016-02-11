@@ -307,7 +307,14 @@ class RequestTracker
         $this->setRequestUrl($url);
 
         $response = $this->send();
-        return $this->parseResponse($response);
+        $response = $this->parseResponse($response);
+        if (!empty($response['Attachments'])) {
+            // Turn Attachments to an arrray keyed by attachment id:
+            $attachments = explode(chr(10), $response['Attachments']);
+            $response = $this->parseResponseBody($attachments);
+        }
+
+        return $response;
     }
 
     /**
@@ -329,7 +336,7 @@ class RequestTracker
      * Get the content of an attachment
      * @param int $ticketId
      * @param int $attachmentId
-     * @param bool $raw
+     * @param bool $raw @todo: Default this to true? I dont see a usecase for false tbh.
      * @return array key=>value response pair array
      */
     public function getAttachmentContent($ticketId, $attachmentId, $raw = false)
@@ -342,7 +349,9 @@ class RequestTracker
         if (! $raw) {
             return $this->parseResponse($response);
         } else {
-            return $response;
+            // Remove unneeded newlines from response body and return it as string.
+            $body = explode(chr(10), $response['body']);
+            return implode(chr(10), $this->cleanResponseBody($body));
         }
     }
 
