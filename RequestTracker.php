@@ -98,7 +98,12 @@ class RequestTracker
      * will be used as the fields for the form instead of getting pushed
      * into the content field.
      *
-     * @param object[] $attachments Attachment's array to add to ticket
+     * @param object[] $attachments Attachment's array to add to ticket. It should
+     * be a CURLFile array for PHP > 5.5 or an array of strings containing the
+     * filepath prepended with "@" for PHP < 5.5 eg:
+     * @/tmp/phpK5TNJc
+     * or
+     * @/tmp/phpK5TNJc;type=text/plain;filename=2.txt
      *
      * From original Request Tracker API, to add attachment to ticket while doing a comment
      * we must add another attachment_1 param with raw file
@@ -121,8 +126,9 @@ class RequestTracker
 
         // If we've received attachment param, we have to add to POST params apart from 'content' and send Content-Type
         if (!empty($attachments)) {
+            $i = 1;
             foreach ($attachments as $key => $attachment) {
-                $fields['attachment_'.$key] = $attachment;
+                $fields['attachment_'.$i++] = $attachment;
             }
         }
         $response = $this->post($fields);
@@ -168,9 +174,11 @@ class RequestTracker
      * Reply to a ticket
      * @param int $ticketId
      * @param array $content the ticket fields as fieldname=>fieldvalue array
+     * @param array $attachments ticket attachments array keyed by filename.
+     * For the array value see self::send() documentation.
      * @return array key=>value response pair array
      */
-    public function doTicketReply($ticketId, $content)
+    public function doTicketReply($ticketId, $content, array $attachments = array())
     {
         $content['Action'] = 'correspond';
         $content['id'] = $ticketId;
@@ -179,8 +187,15 @@ class RequestTracker
             $content['Text'] = str_replace("\n", "\n ", $content['Text']);
         }
         $this->setRequestUrl($url);
-        $this->setPostFields($content);
-        $response = $this->send();
+        if (!empty($attachments)) {
+            $content['Attachment'] = implode("\n ", array_keys($attachments));
+            $this->setPostFields($content);
+            $response = $this->send(false, $attachments);
+        } else {
+            $this->setPostFields($content);
+            $response = $this->send();
+        }
+
         return $this->parseResponse($response);
     }
 
@@ -188,9 +203,11 @@ class RequestTracker
      * Comment on a ticket
      * @param int $ticketId
      * @param array $content
+     * @param array $attachments ticket attachments array keyed by filename.
+     * For the array value see self::send() documentation.
      * @return array key=>value response pair array
      */
-    public function doTicketComment($ticketId, $content)
+    public function doTicketComment($ticketId, $content, array $attachments = array())
     {
         $content['Action'] = 'comment';
         $url = $this->url."ticket/$ticketId/comment";
@@ -200,29 +217,15 @@ class RequestTracker
         }
 
         $this->setRequestUrl($url);
-        $this->setPostFields($content);
-
-        // If we have attachment_1 content, we have to pass it apart from inside 'content' array position
-        // and unset from postFields and from 'content' array because cannot convert CurlObject to String
-        // into parseArray() method inside send()
-        if (!empty($content['attachment_1'])) {
-
-            $attachContent = array();
-            // search for all file fields
-            $i = 1;
-            foreach ($content as $key => $value) {
-                if (strncmp($key, "attachment_", 11) == 0) {
-                    $attachContent[$i] = $value;
-                    unset($content['attachment_'.$i]);
-                    unset($this->postFields['attachment_'.$i]);
-                    $i++;
-                }
-            }
-            $response = $this->send(false, $attachContent);
-
+        if (!empty($attachments)) {
+            $content['Attachment'] = implode("\n ", array_keys($attachments));
+            $this->setPostFields($content);
+            $response = $this->send(false, $attachments);
         } else {
+            $this->setPostFields($content);
             $response = $this->send();
         }
+
         return $this->parseResponse($response);
     }
 
