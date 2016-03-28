@@ -200,6 +200,22 @@ class RequestTracker
     }
 
     /**
+     * Merge a ticket into another
+     * @param int $ticketId
+     * @param int $intoId
+     * @return array key=>value response pair array
+     */
+    public function doTicketMerge($ticketId, $intoId)
+    {
+        $url = $this->url."ticket/$ticketId/merge/$intoId";
+        $this->setRequestUrl($url);
+
+        $response = $this->send();
+
+        return $this->parseResponse($response);
+    }
+
+    /**
      * Comment on a ticket
      * @param int $ticketId
      * @param array $content
