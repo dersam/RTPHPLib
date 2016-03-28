@@ -583,6 +583,26 @@ class RequestTracker
     }
 
     /**
+     * Get metadata of a group
+     * @param int $groupId
+     * @param array $fields
+     *   Ask for specific fields to retrieve. (eg Members or Name)
+     * @return array key=>value response pair array
+     */
+    public function getGroupProperties($groupId, array $fields = array())
+    {
+        $url = $this->url."group/$groupId";
+        if ($fields) {
+            $url .= '?fields=' . implode(',', $fields);
+        }
+
+        $this->setRequestUrl($url);
+
+        $response = $this->send();
+        return $this->parseResponse($response);
+    }
+
+    /**
      * Convenience wrapper to search for groups.
      *
      * @see self::search()
