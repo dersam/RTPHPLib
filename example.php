@@ -84,11 +84,11 @@ print_r($response);
 /*
 // PHP > 5.5
 $attachments = [
-    new \CURLFile('/tmp/phpK5TNJc', 'text/plain', '2.txt'),
+    '2.txt' => new \CURLFile('/tmp/phpK5TNJc', 'text/plain', '2.txt'),
 ];
 // PHP < 5.5
 $attachments = array(
-    '@/tmp/phpK5TNJc;type=text/plain;filename=2.txt',
+    '2.txt' => '@/tmp/phpK5TNJc;type=text/plain;filename=2.txt',
 );
 $content = array(
     'Text' => 'This is a test reply.',
