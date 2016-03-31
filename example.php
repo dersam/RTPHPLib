@@ -84,7 +84,7 @@ print_r($response);
 /*
 // PHP > 5.5
 $attachments = [
-    new \CURLFile('/tmp/phpK5TNJc', 'text/plain', 'filename=2.txt'),
+    new \CURLFile('/tmp/phpK5TNJc', 'text/plain', '2.txt'),
 ];
 // PHP < 5.5
 $attachments = array(
