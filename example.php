@@ -80,6 +80,23 @@ $response = $rt->getAttachmentContent(3, 13);
 print_r($response);
  */
 
+// Adding attachment when replying. (Untested)
+/*
+// PHP > 5.5
+$attachments = [
+    new \CURLFile('/tmp/phpK5TNJc', 'text/plain', 'filename=2.txt'),
+];
+// PHP < 5.5
+$attachments = array(
+    '@/tmp/phpK5TNJc;type=text/plain;filename=2.txt',
+);
+$content = array(
+    'Text' => 'This is a test reply.',
+);
+$rt->doTicketReply(233, $content, $attachments);
+ */
+
+
 //Ticket History
         /*
 $response = $rt->getTicketHistory(233);
@@ -93,5 +110,3 @@ print_r($response);
             /*
 $response = $rt->search("Owner='Nobody'",'-Created', 's');
 print_r($response);   */
-
-?>
