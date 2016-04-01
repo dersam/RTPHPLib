@@ -98,9 +98,10 @@ class RequestTracker
      * will be used as the fields for the form instead of getting pushed
      * into the content field.
      *
-     * @param object[] $attachments Attachment's array to add to ticket. It should
-     * be a CURLFile array for PHP > 5.5 or an array of strings containing the
-     * filepath prepended with "@" for PHP < 5.5 eg:
+     * @param object[] $attachments Attachments array to add to ticket keyed by
+     * filenames. The array values should be CURLFile objects for PHP > 5.5 or
+     * an array of strings containing the file info prepended with "@" for
+     * PHP < 5.5 eg:
      * @/tmp/phpK5TNJc
      * or
      * @/tmp/phpK5TNJc;type=text/plain;filename=2.txt
