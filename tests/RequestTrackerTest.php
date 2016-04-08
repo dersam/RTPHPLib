@@ -137,4 +137,34 @@ class RequestTrackerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('This is a test comment.\nNew Line', $node['Content']);
         $this->assertEquals('Comment', $node['Type']);
     }
+
+    public function testTicketMerge()
+    {
+        $rt = $this->getRequestTracker();
+        $content1 = array(
+            'Queue'=>'General',
+            'Requestor'=>'test@example.com',
+            'Subject'=>'Lorem Ipsum',
+            'Text'=>'dolor sit amet',
+            'Priority'=>1
+        );
+        $response = $rt->createTicket($content1);
+        $ticketId1 = $this->getTicketIdFromCreateResponse($response);
+
+        $content2 = array(
+            'Queue'=>'General',
+            'Requestor'=>'test@example.com',
+            'Subject'=>'Lorem Ipsum',
+            'Text'=>'dolor sit amet',
+            'Priority'=>1
+        );
+        $response = $rt->createTicket($content2);
+        $ticketId2 = $this->getTicketIdFromCreateResponse($response);
+
+        // Merge ticket 2 to ticket 1.
+        $response = $rt->doTicketMerge($ticketId2, $ticketId1);
+
+        $this->assertEquals('# Merge completed.', key($response));
+    }
+
 }
