@@ -455,7 +455,17 @@ class RequestTracker
         foreach ($historyNodeStrings as $historyNodeString) {
             $node = explode(chr(10), $historyNodeString);
             $node = $this->cleanResponseBody($node);
-            $historyNodes[] = $this->parseResponseBody($node, $delimiter);
+            $node = $this->parseResponseBody($node, $delimiter);
+            if (!empty($node['Attachments'])) {
+                $node['Attachments'] = $this->parseResponseBody(explode(chr(10), $node['Attachments']), $delimiter);
+                // RT always prepends with an empty line.
+                unset($node['Attachments']['']);
+            }
+            else {
+                // Normalize to an array.
+                $node['Attachments'] = array();
+            }
+            $historyNodes[] = $node;
         }
 
         return $historyNodes;
