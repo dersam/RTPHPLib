@@ -448,7 +448,7 @@ class RequestTracker
         } elseif ($format=='i') {
             return $response['body'];
         } elseif ($format=='l') {
-            return $response['body'];
+            $responseArray = $this->parseLongFormatSearchResponse($response);
         }
 
         return $responseArray;
@@ -460,6 +460,22 @@ class RequestTracker
         $response = $this->cleanResponseBody($response);
 
         return $this->parseResponseBody($response);
+    }
+
+    private function parseLongFormatSearchResponse($response, $delimiter = ':')
+    {
+        $resultNodes = array();
+        $resultStrings = preg_split('/(?=id: )/', $response['body'], null);
+        // First item contains RT version and newline, remove it.
+        unset($resultStrings[0]);
+        foreach ($resultStrings as $resultString) {
+            $node = explode(chr(10), $resultString);
+            // remove empty line in the end.
+            array_pop($node);
+            $resultNodes[] = $this->parseResponseBody($node, $delimiter);
+        }
+
+        return $resultNodes;
     }
 
     private function parseLongTicketHistoryResponse($response, $delimiter = ':')
