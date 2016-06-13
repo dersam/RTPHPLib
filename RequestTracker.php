@@ -454,7 +454,7 @@ class RequestTracker
         return $responseArray;
     }
 
-    private function parseResponse($response, $delimiter = ':')
+    protected function parseResponse($response, $delimiter = ':')
     {
         $response = explode(chr(10), $response['body']);
         $response = $this->cleanResponseBody($response);
@@ -664,12 +664,12 @@ class RequestTracker
         $this->enableSslVerification = $verify;
     }
 
-    private function setRequestUrl($url)
+    protected function setRequestUrl($url)
     {
         $this->requestUrl = $url;
     }
 
-    private function setPostFields($data)
+    protected function setPostFields($data)
     {
         $this->postFields = $data;
     }
