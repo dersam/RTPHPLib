@@ -427,15 +427,20 @@ class RequestTracker
      * @param string $orderBy how to order the query
      * @param string $format the format type (i,s,l)
      * @param string $type search for: 'ticket', 'queue', 'group' or 'user'?
+     * @param array $fields fields to return
      *
      * @return array
      *      's' = ticket-id=>ticket-subject
      *      'i' = not implemented
      *      'l' = not implemented
      */
-    public function search($query, $orderBy, $format = 's', $type = 'ticket')
+    public function search($query, $orderBy, $format = 's', $type = 'ticket', $fields = array())
     {
-        $url = $this->url."search/$type?query=".urlencode($query)."&orderby=$orderBy&format=$format";
+        $url = $this->url."search/$type?query=".urlencode($query);
+        if (!empty($fields)) {
+            $url .= '&fields=' . urlencode(implode(',', $fields));
+        }
+        $url .= "&orderby=$orderBy&format=$format";
 
         $this->setRequestUrl($url);
 
