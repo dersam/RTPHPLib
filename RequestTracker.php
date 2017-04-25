@@ -143,7 +143,7 @@ class RequestTracker
      * @param array $content the ticket fields as fieldname=>fieldvalue array
      * @return array key=>value response pair array
      */
-    public function createTicket($content)
+    public function createTicket($content, array $attachments = array())
     {
         $content['id'] = 'ticket/new';
         $url = $this->url."ticket/new";
@@ -152,7 +152,14 @@ class RequestTracker
         }
         $this->setRequestUrl($url);
         $this->setPostFields($content);
-        $response = $this->send();
+        if (!empty($attachments)) {
+            $content['Attachment'] = implode("\n ", array_keys($attachments));
+            $this->setPostFields($content);
+            $response = $this->send(false, $attachments);
+        } else {
+            $this->setPostFields($content);
+            $response = $this->send();
+        }
         return $this->parseResponse($response);
     }
 
@@ -368,7 +375,9 @@ class RequestTracker
         } else {
             // Remove unneeded newlines from response body and return it as string.
             $body = explode(chr(10), $response['body']);
-            return implode(chr(10), $this->cleanResponseBody($body));
+            // getAttachmentContent even returns 3 newlines at the end, and cleanResponseBody only strips off 1
+            // We therefor use array_splice($body, 0, -2) as an extra
+            return implode(chr(10), $this->cleanResponseBody(array_splice($body, 0, -2)));
         }
     }
 
@@ -495,8 +504,6 @@ class RequestTracker
             $node = $this->parseResponseBody($node, $delimiter);
             if (!empty($node['Attachments'])) {
                 $node['Attachments'] = $this->parseResponseBody(explode(chr(10), $node['Attachments']), $delimiter);
-                // RT always prepends with an empty line.
-                unset($node['Attachments']['']);
             }
             else {
                 // Normalize to an array.
@@ -522,16 +529,20 @@ class RequestTracker
         $responseArray = array();
         $lastkey = null;
         foreach ($response as $line) {
-            //RT will always preface a multiline with at least one space
-            if (substr($line, 0, 1)==' ') {
-                $responseArray[$lastkey] .= "\n".trim($line);
-                continue;
+            //RT will always preface a multiline with the length of the last key + length of $delimiter + one space)
+            if(! is_null($lastkey) && preg_match('/^\s{' . ( strlen($lastkey) + strlen($delimiter) + 1 ) . '}(.*)$/', $line, $matches)) {
+                $responseArray[$lastkey] .= "\n" . $matches[1];
             }
-            $parts = explode($delimiter, $line);
-            $key = array_shift($parts);
-            $value = implode($delimiter, $parts);
-            $responseArray[$key] = trim($value);
-            $lastkey=$key;
+            elseif(! is_null($lastkey) && strlen($line) == 0) {
+                $lastkey = null;
+            }
+            elseif(preg_match('/^#/', $line, $matches)) {
+                $responseArray[$line] = '';
+            }
+            elseif(preg_match('/^([a-zA-Z0-9]+)' . $delimiter . '\s(.*)$/', $line, $matches)) {
+                $lastkey = $matches[1];
+                $responseArray[$lastkey] = $matches[2];
+            }
         }
 
         return $responseArray;
