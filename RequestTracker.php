@@ -539,7 +539,7 @@ class RequestTracker
             elseif(preg_match('/^#/', $line, $matches)) {
                 $responseArray[$line] = '';
             }
-            elseif(preg_match('/^([a-zA-Z0-9]+)' . $delimiter . '\s(.*)$/', $line, $matches)) {
+            elseif(preg_match('/^([a-zA-Z0-9]+|CF\.{[^}]+})' . $delimiter . '\s(.*)$/', $line, $matches)) {
                 $lastkey = $matches[1];
                 $responseArray[$lastkey] = $matches[2];
             }
