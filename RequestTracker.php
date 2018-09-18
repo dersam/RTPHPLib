@@ -479,7 +479,7 @@ class RequestTracker
     private function parseLongFormatSearchResponse($response, $delimiter = ':')
     {
         $resultNodes = array();
-        $resultStrings = preg_split('/(?=id: )/', $response['body'], null);
+        $resultStrings = preg_split('/(?=^id: )/m', $response['body'], null);
         // First item contains RT version and newline, remove it.
         unset($resultStrings[0]);
         foreach ($resultStrings as $resultString) {
