@@ -724,7 +724,7 @@ class RequestTracker
         #  RT/4.4.1 401 Credentials required
         #  
         #  Your username or password is incorrect
-        if($code == 200 && preg_match('!^RT/\d+\.\d+\.\d+\s+(\d{3})\s+.+?\n\n(.*)\n$!s', $response, $matches)) {
+        if($code == 200 && preg_match('!^RT/\d+\.\d+\.\d+[^\s]*\s+(\d{3})\s+.+?\n\n(.*)\n$!s', $response, $matches)) {
             $code     = $matches[1];
             //$response = $matches[2];
         }
