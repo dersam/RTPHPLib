@@ -4,7 +4,7 @@
 Provides an implementation of the Request Tracker API in PHP.
 
 ## Requirements
-* PHP 5.3+
+* PHP 5.3+ should work, but we only test PHP versions that are not EOL (7+). You really shouldn't be using PHP5 anymore.
 * curl
 
 ## Installation
